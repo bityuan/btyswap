@@ -1,0 +1,3161 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "2290ca2ec74690ed9024d986955ef431",
+      "sourceName": "contracts/core/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\interfaces\\IPancakeCallee.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "7fcdd1405728b22e2ee933fe4c100b89",
+      "sourceName": "contracts/core/interfaces/IPancakeCallee.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeCallee"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\interfaces\\IPancakeFactory.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "09175e1f8c7c13b15c9bc28cdd434265",
+      "sourceName": "contracts/core/interfaces/IPancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeFactory"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@uniswap\\lib\\contracts\\libraries\\TransferHelper.sol": {
+      "lastModificationDate": 1755184538909,
+      "contentHash": "b312dfef05a1e7fdbade150348591bd0",
+      "sourceName": "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "TransferHelper"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\IWETH.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "066282b2add4d34a23450b209485d030",
+      "sourceName": "contracts/periphery/interfaces/IWETH.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IWETH"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "2290ca2ec74690ed9024d986955ef431",
+      "sourceName": "contracts/periphery/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\IPancakeRouter01.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "b065003f68f8e709807a610e5b63353f",
+      "sourceName": "contracts/periphery/interfaces/IPancakeRouter01.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IPancakeRouter01"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\IPancakeRouter02.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "fba64df63a02797340a02f5055ef87a4",
+      "sourceName": "contracts/periphery/interfaces/IPancakeRouter02.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IPancakeRouter01.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IPancakeRouter02"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\V1\\IUniswapV1Exchange.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "5d488e4502cbe3de5a448ef986bcd754",
+      "sourceName": "contracts/periphery/interfaces/V1/IUniswapV1Exchange.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV1Exchange"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\V1\\IUniswapV1Factory.sol": {
+      "lastModificationDate": 1755174102309,
+      "contentHash": "28233b48ea6bfc76bfdd986ad1aca6cc",
+      "sourceName": "contracts/periphery/interfaces/V1/IUniswapV1Factory.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV1Factory"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\interfaces\\IPancakeMigrator.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "d1c34b8d552750ebe874f2e957810496",
+      "sourceName": "contracts/periphery/interfaces/IPancakeMigrator.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeMigrator"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\interfaces\\IPancakePair.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "831ea5848a0260afc9863bf4e3dd0989",
+      "sourceName": "contracts/core/interfaces/IPancakePair.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakePair"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\libraries\\PancakeOracleLibrary.sol": {
+      "lastModificationDate": 1755183782304,
+      "contentHash": "1480266d3b3cc7199a7fed7489a0aafe",
+      "sourceName": "contracts/periphery/libraries/PancakeOracleLibrary.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../core/interfaces/IPancakePair.sol",
+        "@uniswap/lib/contracts/libraries/FixedPoint.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "PancakeOracleLibrary"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@uniswap\\lib\\contracts\\libraries\\FixedPoint.sol": {
+      "lastModificationDate": 1755184538906,
+      "contentHash": "e4a4584c59d8b1515ce998ec9bf49f5c",
+      "sourceName": "@uniswap/lib/contracts/libraries/FixedPoint.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Babylonian.sol"
+      ],
+      "versionPragmas": [
+        ">=0.4.0"
+      ],
+      "artifacts": [
+        "FixedPoint"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@uniswap\\lib\\contracts\\libraries\\Babylonian.sol": {
+      "lastModificationDate": 1755184538906,
+      "contentHash": "7e23695840ea364fb0959d203e2d5b3d",
+      "sourceName": "@uniswap/lib/contracts/libraries/Babylonian.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.0"
+      ],
+      "artifacts": [
+        "Babylonian"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\interfaces\\IPancakeERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "7dbf6da252e82de5a13e160771627aa1",
+      "sourceName": "contracts/core/interfaces/IPancakeERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\Migration.sol": {
+      "lastModificationDate": 1755182951999,
+      "contentHash": "5491b5548247fa0d92e04e914451c61d",
+      "sourceName": "contracts/core/Migration.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.7.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\Migrations.sol": {
+      "lastModificationDate": 1755183803227,
+      "contentHash": "5491b5548247fa0d92e04e914451c61d",
+      "sourceName": "contracts/periphery/Migrations.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.7.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\WBTY.sol": {
+      "lastModificationDate": 1756907481085,
+      "contentHash": "9b4b2fc57b76405c8beb078cc456030d",
+      "sourceName": "contracts/WBTY.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./periphery/interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "WBTY"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\PancakePair.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "efaec1f28b31ffa2bec3e7df3457df96",
+      "sourceName": "contracts/core/PancakePair.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakePair.sol",
+        "./PancakeERC20.sol",
+        "./libraries/Math.sol",
+        "./libraries/UQ112x112.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IPancakeFactory.sol",
+        "./interfaces/IPancakeCallee.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakePair"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\libraries\\Math.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "807b5a3ee256f814ef1aeb0996fd9a85",
+      "sourceName": "contracts/core/libraries/Math.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\PancakeERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "0a8b7944e50f4b19136bff0352479f74",
+      "sourceName": "contracts/core/PancakeERC20.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakeERC20.sol",
+        "./libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakeERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\libraries\\UQ112x112.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "b4c8a4d6e325bff8a4002ae0681eb036",
+      "sourceName": "contracts/core/libraries/UQ112x112.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "UQ112x112"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "acf692d86aa69bcd2fe982bd93189262",
+      "sourceName": "contracts/core/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\PancakeFactory.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "bb1f89ad425e5ae35268fce54e802d0c",
+      "sourceName": "contracts/core/PancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakeFactory.sol",
+        "./PancakePair.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakeFactory"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\core\\test\\ERC20.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "769ec88cb27b58502484850b5df26fce",
+      "sourceName": "contracts/core/test/ERC20.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../PancakeERC20.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\PancakeRouter01.sol": {
+      "lastModificationDate": 1755185531387,
+      "contentHash": "b4f467dbac4f2c5c2a39c0a5c5ae919e",
+      "sourceName": "contracts/periphery/PancakeRouter01.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IPancakeFactory.sol",
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./libraries/PancakeLibrary.sol",
+        "./interfaces/IPancakeRouter01.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeRouter01"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\libraries\\PancakeLibrary.sol": {
+      "lastModificationDate": 1756909012028,
+      "contentHash": "b0829fd98ca47fb5eb71f419d87213d4",
+      "sourceName": "contracts/periphery/libraries/PancakeLibrary.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../core/interfaces/IPancakePair.sol",
+        "./SafeMath.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "PancakeLibrary"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "5c1a77bf4696b29e1c42de054bd4bd4a",
+      "sourceName": "contracts/periphery/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\PancakeRouter.sol": {
+      "lastModificationDate": 1755185531386,
+      "contentHash": "91a58defd18d8dad6cbd367d5f6fdc6f",
+      "sourceName": "contracts/periphery/PancakeRouter.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IPancakeFactory.sol",
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./interfaces/IPancakeRouter02.sol",
+        "./libraries/PancakeLibrary.sol",
+        "./libraries/SafeMath.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeRouter"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\PancakeMigrator.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "339aa8d720116258d9906161b6d35404",
+      "sourceName": "contracts/periphery/PancakeMigrator.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./interfaces/IPancakeMigrator.sol",
+        "./interfaces/V1/IUniswapV1Factory.sol",
+        "./interfaces/V1/IUniswapV1Exchange.sol",
+        "./interfaces/IPancakeRouter01.sol",
+        "./interfaces/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeMigrator"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\test\\RouterEventEmitter.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "4d481ba96ad68d1fb0dcb54e2a885f8b",
+      "sourceName": "contracts/periphery/test/RouterEventEmitter.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IPancakeRouter01.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "RouterEventEmitter"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\test\\ERC20.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "bea33121b8f6de6b55cb10476376518a",
+      "sourceName": "contracts/periphery/test/ERC20.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\test\\DeflatingERC20.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "95281ba667bb23f503859730ec60a790",
+      "sourceName": "contracts/periphery/test/DeflatingERC20.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "DeflatingERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\periphery\\test\\WETH9.sol": {
+      "lastModificationDate": 1755174102311,
+      "contentHash": "6499b8c76657ae2329633573dac36b43",
+      "sourceName": "contracts/periphery/test/WETH9.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "WETH9"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\Multicall.sol": {
+      "lastModificationDate": 1755226224854,
+      "contentHash": "57f13507ede9c9500a1ddc70b031a2e4",
+      "sourceName": "contracts/Multicall.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "Multicall"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\contracts\\CustomERC20.sol": {
+      "lastModificationDate": 1755270335837,
+      "contentHash": "443ab1ada7b5e5ddebc59bb26524babf",
+      "sourceName": "contracts/CustomERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "CustomERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
+      "lastModificationDate": 1755180077835,
+      "contentHash": "6748815a5b45c4aeeda56819f41190e0",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
+      "lastModificationDate": 1755180077813,
+      "contentHash": "8065b340476f61365c076897199425f1",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/Context.sol",
+        "./IERC20.sol",
+        "../../math/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
+      "lastModificationDate": 1755180077807,
+      "contentHash": "2adbd82f6d055a4751566d4671512b03",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@openzeppelin\\contracts\\math\\SafeMath.sol": {
+      "lastModificationDate": 1755180077838,
+      "contentHash": "e03e12206057e809eb76c5f681170c32",
+      "sourceName": "@openzeppelin/contracts/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\pancake\\bityuan-pancake-v2\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1755180077828,
+      "contentHash": "e0a41531d159d3a32f84b7a3ecf9fabb",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "2290ca2ec74690ed9024d986955ef431",
+      "sourceName": "contracts/core/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\interfaces\\IPancakeCallee.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "7fcdd1405728b22e2ee933fe4c100b89",
+      "sourceName": "contracts/core/interfaces/IPancakeCallee.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeCallee"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\interfaces\\IPancakeFactory.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "09175e1f8c7c13b15c9bc28cdd434265",
+      "sourceName": "contracts/core/interfaces/IPancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeFactory"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@uniswap\\lib\\contracts\\libraries\\TransferHelper.sol": {
+      "lastModificationDate": 1755184538909,
+      "contentHash": "b312dfef05a1e7fdbade150348591bd0",
+      "sourceName": "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0"
+      ],
+      "artifacts": [
+        "TransferHelper"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\IWETH.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "066282b2add4d34a23450b209485d030",
+      "sourceName": "contracts/periphery/interfaces/IWETH.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IWETH"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\WBTY.sol": {
+      "lastModificationDate": 1756908508758,
+      "contentHash": "9b4b2fc57b76405c8beb078cc456030d",
+      "sourceName": "contracts/WBTY.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./periphery/interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "WBTY"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\IERC20.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "2290ca2ec74690ed9024d986955ef431",
+      "sourceName": "contracts/periphery/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\IPancakeRouter01.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "b065003f68f8e709807a610e5b63353f",
+      "sourceName": "contracts/periphery/interfaces/IPancakeRouter01.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IPancakeRouter01"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\IPancakeRouter02.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "fba64df63a02797340a02f5055ef87a4",
+      "sourceName": "contracts/periphery/interfaces/IPancakeRouter02.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IPancakeRouter01.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IPancakeRouter02"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\V1\\IUniswapV1Exchange.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "5d488e4502cbe3de5a448ef986bcd754",
+      "sourceName": "contracts/periphery/interfaces/V1/IUniswapV1Exchange.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV1Exchange"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\V1\\IUniswapV1Factory.sol": {
+      "lastModificationDate": 1755174102309,
+      "contentHash": "28233b48ea6bfc76bfdd986ad1aca6cc",
+      "sourceName": "contracts/periphery/interfaces/V1/IUniswapV1Factory.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV1Factory"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\interfaces\\IPancakeMigrator.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "d1c34b8d552750ebe874f2e957810496",
+      "sourceName": "contracts/periphery/interfaces/IPancakeMigrator.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeMigrator"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\interfaces\\IPancakePair.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "831ea5848a0260afc9863bf4e3dd0989",
+      "sourceName": "contracts/core/interfaces/IPancakePair.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakePair"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\libraries\\PancakeOracleLibrary.sol": {
+      "lastModificationDate": 1755183782304,
+      "contentHash": "1480266d3b3cc7199a7fed7489a0aafe",
+      "sourceName": "contracts/periphery/libraries/PancakeOracleLibrary.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../core/interfaces/IPancakePair.sol",
+        "@uniswap/lib/contracts/libraries/FixedPoint.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "PancakeOracleLibrary"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@uniswap\\lib\\contracts\\libraries\\FixedPoint.sol": {
+      "lastModificationDate": 1755184538906,
+      "contentHash": "e4a4584c59d8b1515ce998ec9bf49f5c",
+      "sourceName": "@uniswap/lib/contracts/libraries/FixedPoint.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Babylonian.sol"
+      ],
+      "versionPragmas": [
+        ">=0.4.0"
+      ],
+      "artifacts": [
+        "FixedPoint"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@uniswap\\lib\\contracts\\libraries\\Babylonian.sol": {
+      "lastModificationDate": 1755184538906,
+      "contentHash": "7e23695840ea364fb0959d203e2d5b3d",
+      "sourceName": "@uniswap/lib/contracts/libraries/Babylonian.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.0"
+      ],
+      "artifacts": [
+        "Babylonian"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\interfaces\\IPancakeERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "7dbf6da252e82de5a13e160771627aa1",
+      "sourceName": "contracts/core/interfaces/IPancakeERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IPancakeERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\Migration.sol": {
+      "lastModificationDate": 1755182951999,
+      "contentHash": "5491b5548247fa0d92e04e914451c61d",
+      "sourceName": "contracts/core/Migration.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.7.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\CustomERC20.sol": {
+      "lastModificationDate": 1760359263295,
+      "contentHash": "443ab1ada7b5e5ddebc59bb26524babf",
+      "sourceName": "contracts/CustomERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "CustomERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
+      "lastModificationDate": 1755180077835,
+      "contentHash": "6748815a5b45c4aeeda56819f41190e0",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Ownable"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\ERC20.sol": {
+      "lastModificationDate": 1755180077813,
+      "contentHash": "8065b340476f61365c076897199425f1",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../utils/Context.sol",
+        "./IERC20.sol",
+        "../../math/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
+      "lastModificationDate": 1755180077807,
+      "contentHash": "2adbd82f6d055a4751566d4671512b03",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@openzeppelin\\contracts\\math\\SafeMath.sol": {
+      "lastModificationDate": 1755180077838,
+      "contentHash": "e03e12206057e809eb76c5f681170c32",
+      "sourceName": "@openzeppelin/contracts/math/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1755180077828,
+      "contentHash": "e0a41531d159d3a32f84b7a3ecf9fabb",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\DynamicTaxToken.sol": {
+      "lastModificationDate": 1767101108114,
+      "contentHash": "f3f06d423a8b39011b15d4c8bdc0a651",
+      "sourceName": "contracts/DynamicTaxToken.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/math/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "DynamicTaxToken",
+        "IUniswapV2Factory",
+        "IUniswapV2Pair",
+        "IUniswapV2Router02"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\Multicall.sol": {
+      "lastModificationDate": 1755226224854,
+      "contentHash": "57f13507ede9c9500a1ddc70b031a2e4",
+      "sourceName": "contracts/Multicall.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "Multicall"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\Migrations.sol": {
+      "lastModificationDate": 1755183803227,
+      "contentHash": "5491b5548247fa0d92e04e914451c61d",
+      "sourceName": "contracts/periphery/Migrations.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.25 <0.7.0"
+      ],
+      "artifacts": [
+        "Migrations"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\PMMToken.sol": {
+      "lastModificationDate": 1766565359513,
+      "contentHash": "8e600f3ae2136051cbface0cf3dcbf8a",
+      "sourceName": "contracts/PMMToken.sol",
+      "solcConfig": {
+        "version": "0.6.12",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.6.12"
+      ],
+      "artifacts": [
+        "Address",
+        "CoinToken",
+        "Context",
+        "IERC20",
+        "IUniswapV2Factory",
+        "IUniswapV2Pair",
+        "IUniswapV2Router01",
+        "IUniswapV2Router02",
+        "Ownable",
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\PancakePair.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "efaec1f28b31ffa2bec3e7df3457df96",
+      "sourceName": "contracts/core/PancakePair.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakePair.sol",
+        "./PancakeERC20.sol",
+        "./libraries/Math.sol",
+        "./libraries/UQ112x112.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IPancakeFactory.sol",
+        "./interfaces/IPancakeCallee.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakePair"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\PancakeERC20.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "0a8b7944e50f4b19136bff0352479f74",
+      "sourceName": "contracts/core/PancakeERC20.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakeERC20.sol",
+        "./libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakeERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\libraries\\UQ112x112.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "b4c8a4d6e325bff8a4002ae0681eb036",
+      "sourceName": "contracts/core/libraries/UQ112x112.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "UQ112x112"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\libraries\\Math.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "807b5a3ee256f814ef1aeb0996fd9a85",
+      "sourceName": "contracts/core/libraries/Math.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "acf692d86aa69bcd2fe982bd93189262",
+      "sourceName": "contracts/core/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\PancakeFactory.sol": {
+      "lastModificationDate": 1755174086482,
+      "contentHash": "bb1f89ad425e5ae35268fce54e802d0c",
+      "sourceName": "contracts/core/PancakeFactory.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IPancakeFactory.sol",
+        "./PancakePair.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "PancakeFactory"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\core\\test\\ERC20.sol": {
+      "lastModificationDate": 1755174086487,
+      "contentHash": "769ec88cb27b58502484850b5df26fce",
+      "sourceName": "contracts/core/test/ERC20.sol",
+      "solcConfig": {
+        "version": "0.5.16",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../PancakeERC20.sol"
+      ],
+      "versionPragmas": [
+        "=0.5.16"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\PancakeRouter01.sol": {
+      "lastModificationDate": 1755185531387,
+      "contentHash": "b4f467dbac4f2c5c2a39c0a5c5ae919e",
+      "sourceName": "contracts/periphery/PancakeRouter01.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IPancakeFactory.sol",
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./libraries/PancakeLibrary.sol",
+        "./interfaces/IPancakeRouter01.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeRouter01"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\libraries\\PancakeLibrary.sol": {
+      "lastModificationDate": 1756912783458,
+      "contentHash": "b0829fd98ca47fb5eb71f419d87213d4",
+      "sourceName": "contracts/periphery/libraries/PancakeLibrary.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../core/interfaces/IPancakePair.sol",
+        "./SafeMath.sol"
+      ],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "PancakeLibrary"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\libraries\\SafeMath.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "5c1a77bf4696b29e1c42de054bd4bd4a",
+      "sourceName": "contracts/periphery/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "SafeMath"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\PancakeRouter.sol": {
+      "lastModificationDate": 1755185531386,
+      "contentHash": "91a58defd18d8dad6cbd367d5f6fdc6f",
+      "sourceName": "contracts/periphery/PancakeRouter.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../core/interfaces/IPancakeFactory.sol",
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./interfaces/IPancakeRouter02.sol",
+        "./libraries/PancakeLibrary.sol",
+        "./libraries/SafeMath.sol",
+        "./interfaces/IERC20.sol",
+        "./interfaces/IWETH.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeRouter"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\PancakeMigrator.sol": {
+      "lastModificationDate": 1755174102304,
+      "contentHash": "339aa8d720116258d9906161b6d35404",
+      "sourceName": "contracts/periphery/PancakeMigrator.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@uniswap/lib/contracts/libraries/TransferHelper.sol",
+        "./interfaces/IPancakeMigrator.sol",
+        "./interfaces/V1/IUniswapV1Factory.sol",
+        "./interfaces/V1/IUniswapV1Exchange.sol",
+        "./interfaces/IPancakeRouter01.sol",
+        "./interfaces/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "PancakeMigrator"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\test\\RouterEventEmitter.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "4d481ba96ad68d1fb0dcb54e2a885f8b",
+      "sourceName": "contracts/periphery/test/RouterEventEmitter.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IPancakeRouter01.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "RouterEventEmitter"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\test\\ERC20.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "bea33121b8f6de6b55cb10476376518a",
+      "sourceName": "contracts/periphery/test/ERC20.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\test\\DeflatingERC20.sol": {
+      "lastModificationDate": 1755174102310,
+      "contentHash": "95281ba667bb23f503859730ec60a790",
+      "sourceName": "contracts/periphery/test/DeflatingERC20.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "DeflatingERC20"
+      ]
+    },
+    "D:\\project\\Bityuanswap\\frontAndContract\\swapContract\\contracts\\periphery\\test\\WETH9.sol": {
+      "lastModificationDate": 1755174102311,
+      "contentHash": "6499b8c76657ae2329633573dac36b43",
+      "sourceName": "contracts/periphery/test/WETH9.sol",
+      "solcConfig": {
+        "version": "0.6.6",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "=0.6.6"
+      ],
+      "artifacts": [
+        "WETH9"
+      ]
+    }
+  }
+}

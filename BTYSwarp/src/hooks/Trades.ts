@@ -1,6 +1,6 @@
 import flatMap from 'lodash.flatmap'
 import { useMemo, useState, useEffect } from 'react'
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@pancakeswap-libs/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade } from '@btyswap-libs/sdk'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'

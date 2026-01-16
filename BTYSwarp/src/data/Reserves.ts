@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import IUniswapV2PairABI from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
-import { TokenAmount, Pair, Currency } from '@pancakeswap-libs/sdk'
+import { TokenAmount, Pair, Currency } from '@btyswap-libs/sdk'
 import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'

@@ -1,4 +1,4 @@
-import { Currency, ETHER } from '@pancakeswap-libs/sdk'
+import { Currency, ETHER } from '@btyswap-libs/sdk'
 
 export default function useTokenSymbol() {
   const getTokenSymbol = (currency: Currency | undefined, chainId?: number) => {

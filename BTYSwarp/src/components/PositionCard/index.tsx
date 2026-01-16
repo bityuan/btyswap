@@ -4,7 +4,7 @@ import { darken } from 'polished'
 import { ChevronDown, ChevronUp, Copy } from 'react-feather'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { JSBI, Pair, Percent } from '@pancakeswap-libs/sdk'
+import { JSBI, Pair, Percent } from '@btyswap-libs/sdk'
 import { useTotalSupply } from '../../data/TotalSupply'
 
 import { useActiveWeb3React } from '../../hooks'

@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, ETHER, Token, TokenAmount, WETH } from '@pancakeswap-libs/sdk'
+import { ChainId, Currency, CurrencyAmount, ETHER, Token, TokenAmount, WETH } from '@btyswap-libs/sdk'
 
 // 直接使用 SDK 中的 WETH，SDK 中 ChainId.MAINNET = 2999，WETH[ChainId.MAINNET] 已经是 WBTY
 export function wrappedCurrency(currency: Currency | undefined, chainId: ChainId | undefined): Token | undefined {

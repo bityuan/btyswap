@@ -1,5 +1,5 @@
 import React from 'react'
-import { Price } from '@pancakeswap-libs/sdk'
+import { Price } from '@btyswap-libs/sdk'
 import { SyncAltIcon, Text } from '@pancakeswap-libs/uikit'
 import { useActiveWeb3React } from 'hooks'
 import useTokenSymbol from 'hooks/useTokenSymbol'

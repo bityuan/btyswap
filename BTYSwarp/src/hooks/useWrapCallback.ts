@@ -1,4 +1,4 @@
-import { ChainId, Currency, currencyEquals, ETHER, WETH } from '@pancakeswap-libs/sdk'
+import { ChainId, Currency, currencyEquals, ETHER, WETH } from '@btyswap-libs/sdk'
 import { useMemo } from 'react'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'

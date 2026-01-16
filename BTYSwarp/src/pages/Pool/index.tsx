@@ -18,7 +18,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { Dots } from 'components/swap/styleds'
 import { useTranslation } from 'react-i18next'
 import PageHeader from 'components/PageHeader'
-import { Pair } from '@pancakeswap-libs/sdk'
+import { Pair } from '@btyswap-libs/sdk'
 import AppBody from '../AppBody'
 
 export default function Pool() {

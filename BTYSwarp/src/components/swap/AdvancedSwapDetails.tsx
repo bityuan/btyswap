@@ -1,5 +1,5 @@
 import React from 'react'
-import { Trade, TradeType } from '@pancakeswap-libs/sdk'
+import { Trade, TradeType } from '@btyswap-libs/sdk'
 import { Card, CardBody, Text } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'react-i18next'
 import { Field } from '../../state/swap/actions'

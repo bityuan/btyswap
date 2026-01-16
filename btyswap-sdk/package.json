@@ -8,7 +8,7 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/btyswap/btyswap-sdk.git",
+  "repository": "https://github.com/bityuan/btyswap/tree/main/btyswap-sdk",
   "keywords": [
     "btyswap",
     "ethereum"
@@ -51,6 +51,10 @@
   },
   "engines": {
     "node": ">=10"
+  },
+  "resolutions": {
+    "glob": "^7.2.3",
+    "@types/glob": "^8.0.0"
   },
   "prettier": {
     "printWidth": 120,

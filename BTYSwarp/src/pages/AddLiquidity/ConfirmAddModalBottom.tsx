@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@pancakeswap-libs/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent } from '@btyswap-libs/sdk'
 import React from 'react'
 import { Button, Text } from '@pancakeswap-libs/uikit'
 import { useTranslation } from 'react-i18next'

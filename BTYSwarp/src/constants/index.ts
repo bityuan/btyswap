@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@pancakeswap-libs/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@btyswap-libs/sdk'
 // TODO: BTY正式链
 export const ROUTER_ADDRESS = '0xb7230033d833d2cB6AA801E857c74465B4AcF272'
 // TODO: BTY测试链

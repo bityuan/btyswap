@@ -14,7 +14,7 @@ BTYSwap 是一个完全去中心化的代币交换平台，允许用户在比特
 btyswap/
 ├── swapContract/      # 智能合约
 ├── btyswap-sdk/       # SDK 工具库
-├── BTYSwap/           # 前端应用
+├── BTYSwarp/           # 前端应用
 └── swap-backend/      # 后端服务
 ```
 
@@ -34,15 +34,15 @@ btyswap/
   - 与 BTYSwap 智能合约交互的便捷接口
   - 其他常用工具函数
 
-### 3. BTYSwap（前端应用）
+### 3. BTYSwarp（前端应用）
 
-- **描述**: BTYSwap 的 Web 前端界面
+- **描述**: BTYSwarp 的 Web 前端界面
 - **功能**:
   - 代币交换界面
   - 流动性管理（添加/移除流动性）
   - 交易历史查询
   - 钱包连接
-  - 实时价格显示
+  - 锁仓功能
 
 ### 4. swap-backend（后端服务）
 

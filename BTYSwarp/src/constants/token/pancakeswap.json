@@ -1,0 +1,22 @@
+{
+  "name": "PancakeSwap Default List",
+  "timestamp": "2024-01-01T00:00:00Z",
+  "version": {
+    "major": 2,
+    "minor": 11,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://exchange.pancakeswap.finance/images/pancakeswap.png",
+  "keywords": ["pancake", "default"],
+  "tokens": [
+    {
+      "name": "Wrapped BTY",
+      "symbol": "WBTY",
+      "address": "0x60dCe135B7c001D4E0a88399DE80e2A2FaF79b06",
+      "chainId": 2999,
+      "decimals": 18,
+      "logoURI": "/images/coins/bty.png"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "network": "Bityuan",
+  "deployer": "0xA45752503484A5d7c3b3EB49e25861a4068ffc5B",
+  "contracts": {
+    "WBTY": "0xE09f5BdCA143f6e4Ad9d43516A1D1289A3DD6dFC",
+    "Factory": "0xC8d6e4d69Cfd2D799b2424c8ae18C602868BeC13",
+    "Router": "0xF7F7b487C0E0AfDbe5681C1D2f4CEC7C6e0DAA8F",
+    "Multicall": "0x98d25EdF17CAE684a146eFe411C2B083FBD238Df"
+  },
+  "initCodePairHash": "0x67d9b6777ecab522347a736dfa495a744ce238a2e26927dde6b743e80ec0e0cb",
+  "timestamp": "2026-01-27T02:27:09.353Z"
+}

@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useMemo, useState, useEffect } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, Percent, WETH } from '@btyswap-libs/sdk'
+import { Currency, currencyEquals, ETHER, Percent, WETH, TokenAmount } from '@btyswap-libs/sdk'
 import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
 import { ArrowDown, Plus } from 'react-feather'
 import { RouteComponentProps } from 'react-router'
@@ -11,7 +11,7 @@ import { RouteComponentProps } from 'react-router'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
@@ -27,7 +27,7 @@ import useTokenSymbol from '../../hooks/useTokenSymbol'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
 
-import { useTransactionAdder } from '../../state/transactions/hooks'
+import { useTransactionAdder, useHasPendingApproval } from '../../state/transactions/hooks'
 import { StyledInternalLink } from '../../components/Shared'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
 import { currencyId } from '../../utils/currencyId'
@@ -84,6 +84,7 @@ export default function RemoveLiquidity({
 
   // txn values
   const [txHash, setTxHash] = useState<string>('')
+  const [removeErrorMessage, setRemoveErrorMessage] = useState<string | undefined>(undefined)
   const [deadline] = useUserDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -109,69 +110,113 @@ export default function RemoveLiquidity({
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
-  async function onAttemptToApprove() {
-    if (!pairContract || !pair || !library) throw new Error('missing dependencies')
-    const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
-    if (!liquidityAmount) throw new Error('missing liquidity amount')
-    // try to gather a signature for permission
-    const nonce = await pairContract.nonces(account)
+  
+  // Track pending approvals
+  const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
+  const lpToken = liquidityAmount instanceof TokenAmount ? liquidityAmount.token : undefined
+  const pendingApproval = useHasPendingApproval(lpToken?.address, ROUTER_ADDRESS)
+  
+  // Track if approval is in progress (from click to transaction submission)
+  const [isApproving, setIsApproving] = useState(false)
 
-    const deadlineForSignature: number = Math.ceil(Date.now() / 1000) + deadline
-
-    const EIP712Domain = [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-    ]
-    const domain = {
-      name: 'Pancake LPs',
-      version: '1',
-      chainId,
-      verifyingContract: pair.liquidityToken.address,
+  // Reset isApproving when approval is confirmed or signature is set
+  useEffect(() => {
+    if ((approval === ApprovalState.APPROVED || signatureData !== null) && isApproving) {
+      setIsApproving(false)
     }
-    const Permit = [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' },
-      { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
-    ]
-    const message = {
-      owner: account,
-      spender: ROUTER_ADDRESS,
-      value: liquidityAmount.raw.toString(),
-      nonce: nonce.toHexString(),
-      deadline: deadlineForSignature,
-    }
-    const data = JSON.stringify({
-      types: {
-        EIP712Domain,
-        Permit,
-      },
-      domain,
-      primaryType: 'Permit',
-      message,
-    })
+  }, [approval, isApproving, signatureData])
 
-    library
-      .send('eth_signTypedData_v4', [account, data])
-      .then(splitSignature)
-      .then((signature) => {
-        setSignatureData({
-          v: signature.v,
-          r: signature.r,
-          s: signature.s,
-          deadline: deadlineForSignature,
+  const handleAttemptToApprove = useCallback(async () => {
+    if (isApproving || approval !== ApprovalState.NOT_APPROVED || signatureData !== null) {
+      return
+    }
+    
+    setIsApproving(true)
+    
+    try {
+      if (!pairContract || !pair || !library) throw new Error('missing dependencies')
+      const liquidityAmountForApproval = parsedAmounts[Field.LIQUIDITY]
+      if (!liquidityAmountForApproval) throw new Error('missing liquidity amount')
+      
+      // try to gather a signature for permission
+      const nonce = await pairContract.nonces(account)
+
+      const deadlineForSignature: number = Math.ceil(Date.now() / 1000) + deadline
+
+      const EIP712Domain = [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+      ]
+      const domain = {
+        name: 'Bityuan LPs',
+        version: '1',
+        chainId,
+        verifyingContract: pair.liquidityToken.address,
+      }
+      const Permit = [
+        { name: 'owner', type: 'address' },
+        { name: 'spender', type: 'address' },
+        { name: 'value', type: 'uint256' },
+        { name: 'nonce', type: 'uint256' },
+        { name: 'deadline', type: 'uint256' },
+      ]
+      const message = {
+        owner: account,
+        spender: ROUTER_ADDRESS,
+        value: liquidityAmountForApproval.raw.toString(),
+        nonce: nonce.toHexString(),
+        deadline: deadlineForSignature,
+      }
+      const data = JSON.stringify({
+        types: {
+          EIP712Domain,
+          Permit,
+        },
+        domain,
+        primaryType: 'Permit',
+        message,
+      })
+
+      // Use ethereum.request instead of deprecated send method
+      const { ethereum } = window as any
+      if (!ethereum || !ethereum.request) {
+        // Fallback to manual approve if ethereum.request is not available
+        await approveCallback()
+        // Keep isApproving true until transaction is confirmed
+        return
+      }
+
+      await ethereum
+        .request({
+          method: 'eth_signTypedData_v4',
+          params: [account, data],
         })
-      })
-      .catch((e) => {
-        // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (e?.code !== 4001) {
-          approveCallback()
-        }
-      })
-  }
+        .then(splitSignature)
+        .then((signature) => {
+          setSignatureData({
+            v: signature.v,
+            r: signature.r,
+            s: signature.s,
+            deadline: deadlineForSignature,
+          })
+          setIsApproving(false) // Signature is immediate, no need to wait for transaction
+        })
+        .catch(async (e) => {
+          // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
+          if (e?.code !== 4001) {
+            await approveCallback()
+            // Keep isApproving true until transaction is confirmed
+          } else {
+            setIsApproving(false)
+          }
+        })
+    } catch (err) {
+      console.error('Approval failed:', err)
+      setIsApproving(false)
+    }
+  }, [isApproving, approval, signatureData, pairContract, pair, library, parsedAmounts, account, deadline, chainId, approveCallback])
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
@@ -188,7 +233,8 @@ export default function RemoveLiquidity({
 
   // tx sending
   const addTransaction = useTransactionAdder()
-  async function onRemove() {
+  
+  const onRemove = useCallback(async () => {
     if (!chainId || !library || !account) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
@@ -202,8 +248,8 @@ export default function RemoveLiquidity({
     }
 
     if (!currencyA || !currencyB) throw new Error('missing tokens')
-    const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
-    if (!liquidityAmount) throw new Error('missing liquidity amount')
+    const liquidityAmountForRemove = parsedAmounts[Field.LIQUIDITY]
+    if (!liquidityAmountForRemove) throw new Error('missing liquidity amount')
 
     const currencyBIsETH = currencyB === ETHER
     const oneCurrencyIsETH = currencyA === ETHER || currencyBIsETH
@@ -220,7 +266,7 @@ export default function RemoveLiquidity({
         methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
         args = [
           currencyBIsETH ? tokenA.address : tokenB.address,
-          liquidityAmount.raw.toString(),
+          liquidityAmountForRemove.raw.toString(),
           amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
           amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
@@ -233,7 +279,7 @@ export default function RemoveLiquidity({
         args = [
           tokenA.address,
           tokenB.address,
-          liquidityAmount.raw.toString(),
+          liquidityAmountForRemove.raw.toString(),
           amountsMin[Field.CURRENCY_A].toString(),
           amountsMin[Field.CURRENCY_B].toString(),
           account,
@@ -248,7 +294,7 @@ export default function RemoveLiquidity({
         methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
         args = [
           currencyBIsETH ? tokenA.address : tokenB.address,
-          liquidityAmount.raw.toString(),
+          liquidityAmountForRemove.raw.toString(),
           amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
           amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
@@ -265,7 +311,7 @@ export default function RemoveLiquidity({
         args = [
           tokenA.address,
           tokenB.address,
-          liquidityAmount.raw.toString(),
+          liquidityAmountForRemove.raw.toString(),
           amountsMin[Field.CURRENCY_A].toString(),
           amountsMin[Field.CURRENCY_B].toString(),
           account,
@@ -280,11 +326,12 @@ export default function RemoveLiquidity({
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
     }
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
-      methodNames.map((methodName, index) =>
+      methodNames.map((methodName) =>
         router.estimateGas[methodName](...args)
           .then(calculateGasMargin)
-          .catch((e) => {
-            console.error(`estimateGas failed`, index, methodName, args, e)
+          .catch(() => {
+            // Silently fail - we'll try the next method in the list
+            // Only log if all methods fail (handled below)
             return undefined
           })
       )
@@ -296,18 +343,21 @@ export default function RemoveLiquidity({
 
     // all estimations failed...
     if (indexOfSuccessfulEstimation === -1) {
-      console.error('This transaction would fail. Please contact support.')
-    } else {
-      const methodName = methodNames[indexOfSuccessfulEstimation]
-      const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
+      const errorMessage = `All gas estimation methods failed. Tried: ${methodNames.join(', ')}`
+      console.error(errorMessage)
+      setAttemptingTxn(false)
+      setRemoveErrorMessage('Gas estimation failed. Please try again or contact support.')
+      return
+    }
+    
+    const methodName = methodNames[indexOfSuccessfulEstimation]
+    const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
 
-      setAttemptingTxn(true)
-      await router[methodName](...args, {
-        gasLimit: safeGasEstimate,
-      })
+    // attemptingTxn is already set to true in handleRemoveConfirm
+    await router[methodName](...args, {
+      gasLimit: safeGasEstimate,
+    })
         .then((response: TransactionResponse) => {
-          setAttemptingTxn(false)
-
           addTransaction(response, {
             summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencyA?.symbol
@@ -315,14 +365,29 @@ export default function RemoveLiquidity({
           })
 
           setTxHash(response.hash)
+          setAttemptingTxn(false)
         })
         .catch((e: Error) => {
           setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          console.error(e)
+          setRemoveErrorMessage(e?.message || 'Transaction failed')
+          setTxHash('')
         })
+  }, [chainId, library, account, parsedAmounts, allowedSlippage, currencyA, currencyB, tokenA, tokenB, approval, signatureData, deadline, addTransaction])
+  
+  const handleRemoveConfirm = useCallback(async () => {
+    // Immediately set attemptingTxn to show "Waiting for confirmation" state
+    setAttemptingTxn(true)
+    setRemoveErrorMessage(undefined)
+    setTxHash('')
+    
+    try {
+      await onRemove()
+    } catch (err: any) {
+      // Error handling is done inside onRemove, but we ensure state is reset
+      setAttemptingTxn(false)
+      setRemoveErrorMessage(err?.message || 'Transaction failed')
     }
-  }
+  }, [onRemove])
 
   function modalHeader() {
     return (
@@ -384,7 +449,10 @@ export default function RemoveLiquidity({
             </RowBetween>
           </>
         )}
-        <Button disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <Button 
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null) || attemptingTxn} 
+          onClick={handleRemoveConfirm}
+        >
           {t('confirm')}
         </Button>
       </>
@@ -454,15 +522,20 @@ export default function RemoveLiquidity({
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
-            hash={txHash || ''}
-            content={() => (
-              <ConfirmationModalContent
-                title={t('youWillReceive')}
-                onDismiss={handleDismissConfirmation}
-                topContent={modalHeader}
-                bottomContent={modalBottom}
-              />
-            )}
+            hash={txHash || undefined}
+            content={() => {
+              if (removeErrorMessage) {
+                return <TransactionErrorContent message={removeErrorMessage} onDismiss={handleDismissConfirmation} />
+              }
+              return (
+                <ConfirmationModalContent
+                  title={t('youWillReceive')}
+                  onDismiss={handleDismissConfirmation}
+                  topContent={modalHeader}
+                  bottomContent={modalBottom}
+                />
+              )
+            }}
             pendingText={pendingText}
           />
           <AutoColumn gap="md">
@@ -638,13 +711,13 @@ export default function RemoveLiquidity({
               <div style={{ position: 'relative' }}>
                 <RowBetween>
                     <Button
-                      onClick={onAttemptToApprove}
+                      onClick={handleAttemptToApprove}
                       variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
-                      disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
+                      disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null || isApproving || pendingApproval}
                       mr="8px"
                     >
-                      {approval === ApprovalState.PENDING ? (
-                        <Dots>Approving</Dots>
+                      {approval === ApprovalState.PENDING || isApproving || pendingApproval ? (
+                        <Dots>授权中...</Dots>
                       ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
                         'Approved'
                       ) : (

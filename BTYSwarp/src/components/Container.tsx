@@ -4,15 +4,17 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1;
 
   width: 100%;
-  padding: 32px 16px;
+  padding: 0 5px;
+  padding-top: 10px;
   min-height: 90vh;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 32px 24px;
+    padding: 0 24px;
+    padding-top: 20px;
   }
 `
 

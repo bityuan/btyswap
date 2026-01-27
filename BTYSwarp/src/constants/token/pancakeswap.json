@@ -13,7 +13,7 @@
     {
       "name": "Wrapped BTY",
       "symbol": "WBTY",
-      "address": "0x60dCe135B7c001D4E0a88399DE80e2A2FaF79b06",
+      "address": "0xE09f5BdCA143f6e4Ad9d43516A1D1289A3DD6dFC",
       "chainId": 2999,
       "decimals": 18,
       "logoURI": "/images/coins/bty.png"

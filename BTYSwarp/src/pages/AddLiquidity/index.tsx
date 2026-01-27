@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@btyswap-libs/sdk'
@@ -6,8 +6,7 @@ import { Button, CardBody, AddIcon, Text as UIKitText } from '@pancakeswap-libs/
 import { RouteComponentProps } from 'react-router-dom'
 import { LightCard } from 'components/Card'
 import { AutoColumn, ColumnCenter } from 'components/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
-import CardNav from 'components/CardNav'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from 'components/TransactionConfirmationModal'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
 import { AddRemoveTabs } from 'components/NavigationTabs'
@@ -19,10 +18,9 @@ import { useActiveWeb3React } from 'hooks'
 import useTokenSymbol from 'hooks/useTokenSymbol'
 import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { useHasPendingApproval, useTransactionAdder } from 'state/transactions/hooks'
 import { Field } from 'state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
-
-import { useTransactionAdder } from 'state/transactions/hooks'
 import { useIsExpertMode, useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -83,6 +81,7 @@ export default function AddLiquidity({
   const [deadline] = useUserDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
   const [txHash, setTxHash] = useState<string>('')
+  const [addErrorMessage, setAddErrorMessage] = useState<string | undefined>(undefined)
 
   // get formatted amounts
   const formattedAmounts = {
@@ -114,8 +113,64 @@ export default function AddLiquidity({
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  
+  // Track pending approvals
+  const amountA = parsedAmounts[Field.CURRENCY_A]
+  const amountB = parsedAmounts[Field.CURRENCY_B]
+  const tokenA = amountA instanceof TokenAmount ? amountA.token : undefined
+  const tokenB = amountB instanceof TokenAmount ? amountB.token : undefined
+  const pendingApprovalA = useHasPendingApproval(tokenA?.address, ROUTER_ADDRESS)
+  const pendingApprovalB = useHasPendingApproval(tokenB?.address, ROUTER_ADDRESS)
+  
+  // Track if approval is in progress (from click to transaction submission)
+  const [isApprovingA, setIsApprovingA] = useState(false)
+  const [isApprovingB, setIsApprovingB] = useState(false)
+
+  // Reset isApproving when approval is confirmed
+  useEffect(() => {
+    if (approvalA === ApprovalState.APPROVED && isApprovingA) {
+      setIsApprovingA(false)
+    }
+  }, [approvalA, isApprovingA])
+
+  useEffect(() => {
+    if (approvalB === ApprovalState.APPROVED && isApprovingB) {
+      setIsApprovingB(false)
+    }
+  }, [approvalB, isApprovingB])
 
   const addTransaction = useTransactionAdder()
+  
+  // Wrapper functions for approval callbacks
+  const handleApproveA = useCallback(async () => {
+    if (isApprovingA || approvalA !== ApprovalState.NOT_APPROVED) {
+      return
+    }
+    setIsApprovingA(true)
+    try {
+      await approveACallback()
+      // Keep isApprovingA true until transaction is confirmed
+      // The approvalState will change when transaction is confirmed
+    } catch (err) {
+      console.error('Approval A failed:', err)
+      setIsApprovingA(false)
+    }
+  }, [isApprovingA, approvalA, approveACallback])
+
+  const handleApproveB = useCallback(async () => {
+    if (isApprovingB || approvalB !== ApprovalState.NOT_APPROVED) {
+      return
+    }
+    setIsApprovingB(true)
+    try {
+      await approveBCallback()
+      // Keep isApprovingB true until transaction is confirmed
+      // The approvalState will change when transaction is confirmed
+    } catch (err) {
+      console.error('Approval B failed:', err)
+      setIsApprovingB(false)
+    }
+  }, [isApprovingB, approvalB, approveBCallback])
 
   async function onAdd() {
     if (!chainId || !library || !account) return
@@ -168,6 +223,8 @@ export default function AddLiquidity({
     }
 
     setAttemptingTxn(true)
+    setAddErrorMessage(undefined)
+    setTxHash('')
     try {
       const estimatedGasLimit = await estimate(...args, value ? { value } : {})
       const response = await method(...args, {
@@ -181,11 +238,18 @@ export default function AddLiquidity({
 
       setTxHash(response.hash)
       setAttemptingTxn(false)
-    } catch (e) {
+    } catch (e: any) {
       setAttemptingTxn(false)
       // we only care if the error is something _other_ than the user rejected the tx
       if (e && typeof e === 'object' && 'code' in e && (e as any).code !== 4001) {
-        console.error(e)
+        setAddErrorMessage(e?.message || 'Transaction failed')
+        setTxHash('')
+      } else if (e && typeof e === 'object' && 'code' in e && (e as any).code === 4001) {
+        // User rejected, just close the modal
+        setShowConfirm(false)
+      } else {
+        setAddErrorMessage(e?.message || 'Transaction failed')
+        setTxHash('')
       }
     }
   }
@@ -285,7 +349,6 @@ export default function AddLiquidity({
 
   return (
     <Container>
-      <CardNav activeIndex={1} />
       <AppBody>
         <AddRemoveTabs adding />
         <Wrapper>
@@ -294,18 +357,23 @@ export default function AddLiquidity({
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
             hash={txHash}
-            content={() => (
-              <ConfirmationModalContent
-                title={
-                  noLiquidity
-                    ? t('youAreCreatingPool')
-                    : t('youWillReceive')
-                }
-                onDismiss={handleDismissConfirmation}
-                topContent={modalHeader}
-                bottomContent={modalBottom}
-              />
-            )}
+            content={() => {
+              if (addErrorMessage) {
+                return <TransactionErrorContent message={addErrorMessage} onDismiss={handleDismissConfirmation} />
+              }
+              return (
+                <ConfirmationModalContent
+                  title={
+                    noLiquidity
+                      ? t('youAreCreatingPool')
+                      : t('youWillReceive')
+                  }
+                  onDismiss={handleDismissConfirmation}
+                  topContent={modalHeader}
+                  bottomContent={modalBottom}
+                />
+              )
+            }}
             pendingText={pendingText}
           />
           <CardBody>
@@ -379,32 +447,36 @@ export default function AddLiquidity({
                   {(approvalA === ApprovalState.NOT_APPROVED ||
                     approvalA === ApprovalState.PENDING ||
                     approvalB === ApprovalState.NOT_APPROVED ||
-                    approvalB === ApprovalState.PENDING) &&
+                    approvalB === ApprovalState.PENDING ||
+                    isApprovingA ||
+                    isApprovingB ||
+                    pendingApprovalA ||
+                    pendingApprovalB) &&
                     isValid && (
                       <RowBetween>
                         {approvalA !== ApprovalState.APPROVED && (
                           <Button
-                            onClick={approveACallback}
-                            disabled={approvalA === ApprovalState.PENDING}
+                            onClick={handleApproveA}
+                            disabled={approvalA === ApprovalState.PENDING || isApprovingA || pendingApprovalA}
                             style={{ width: approvalB !== ApprovalState.APPROVED ? '48%' : '100%' }}
                           >
-                            {approvalA === ApprovalState.PENDING ? (
-                              <Dots>Approving {getTokenSymbol(currencies[Field.CURRENCY_A], chainId)}</Dots>
+                            {approvalA === ApprovalState.PENDING || isApprovingA || pendingApprovalA ? (
+                              <Dots>授权中...</Dots>
                             ) : (
-                                                              `Approve ${getTokenSymbol(currencies[Field.CURRENCY_A], chainId)}`
+                              `Approve ${getTokenSymbol(currencies[Field.CURRENCY_A], chainId)}`
                             )}
                           </Button>
                         )}
                         {approvalB !== ApprovalState.APPROVED && (
                           <Button
-                            onClick={approveBCallback}
-                            disabled={approvalB === ApprovalState.PENDING}
+                            onClick={handleApproveB}
+                            disabled={approvalB === ApprovalState.PENDING || isApprovingB || pendingApprovalB}
                             style={{ width: approvalA !== ApprovalState.APPROVED ? '48%' : '100%' }}
                           >
-                            {approvalB === ApprovalState.PENDING ? (
-                              <Dots>Approving {getTokenSymbol(currencies[Field.CURRENCY_B], chainId)}</Dots>
+                            {approvalB === ApprovalState.PENDING || isApprovingB || pendingApprovalB ? (
+                              <Dots>授权中...</Dots>
                             ) : (
-                                                              `Approve ${getTokenSymbol(currencies[Field.CURRENCY_B], chainId)}`
+                              `Approve ${getTokenSymbol(currencies[Field.CURRENCY_B], chainId)}`
                             )}
                           </Button>
                         )}

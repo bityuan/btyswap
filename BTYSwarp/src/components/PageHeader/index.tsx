@@ -9,6 +9,7 @@ interface PageHeaderProps {
   title: ReactNode
   description?: ReactNode
   children?: ReactNode
+  showSettings?: boolean
 }
 
 const StyledPageHeader = styled.div`
@@ -20,7 +21,7 @@ const Details = styled.div`
   flex: 1;
 `
 
-const PageHeader = ({ title, description, children }: PageHeaderProps) => {
+const PageHeader = ({ title, description, children, showSettings = true }: PageHeaderProps) => {
   const { t } = useTranslation()
   const [onPresentSettings] = useModal(<SettingsModal translateString={t} />)
   const [onPresentRecentTransactions] = useModal(<RecentTransactionsModal translateString={t} />)
@@ -36,16 +37,20 @@ const PageHeader = ({ title, description, children }: PageHeaderProps) => {
             </Text>
           )}
         </Details>
-        <IconButton variant="text" onClick={onPresentSettings} title={t('settings')}>
-          <TuneIcon width="24px" color="currentColor" />
-        </IconButton>
-        <IconButton
-          variant="text"
-          onClick={onPresentRecentTransactions}
-          title={t('recentTransactions')}
-        >
-          <HistoryIcon width="24px" color="currentColor" />
-        </IconButton>
+        {showSettings && (
+          <>
+            <IconButton variant="text" onClick={onPresentSettings} title={t('settings')}>
+              <TuneIcon width="24px" color="currentColor" />
+            </IconButton>
+            <IconButton
+              variant="text"
+              onClick={onPresentRecentTransactions}
+              title={t('recentTransactions')}
+            >
+              <HistoryIcon width="24px" color="currentColor" />
+            </IconButton>
+          </>
+        )}
       </Flex>
       {children && <Text mt="16px">{children}</Text>}
     </StyledPageHeader>

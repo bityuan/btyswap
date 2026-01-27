@@ -6,19 +6,27 @@ import { isMobile } from 'react-device-detect'
 import '@reach/dialog/styles.css'
 import { transparentize } from 'polished'
 
+// No-op function to prevent backdrop clicks when disabled
+const noop = () => {
+  // Intentionally empty to prevent backdrop dismiss
+}
+
 const AnimatedDialogOverlay = animated(DialogOverlay)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
+const StyledDialogOverlay = styled(AnimatedDialogOverlay).withConfig({
+  shouldForwardProp: (prop: string | number) => String(prop) !== 'isFullscreen',
+})<{ isFullscreen?: boolean }>`
   &[data-reach-dialog-overlay] {
-    z-index: 2;
-    background-color: transparent;
+    z-index: 50;
     overflow: hidden;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(0, 0, 0, 0.3);
+    /* 全屏模式下背景色与内容一致，非全屏模式显示半透明遮罩 */
+    background-color: ${({ isFullscreen, theme }) => 
+      isFullscreen ? theme.colors.invertedContrast : 'rgba(0, 0, 0, 0.3)'};
   }
 `
 
@@ -32,6 +40,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
 })<{ minHeight?: number | false; maxHeight?: number; mobile: boolean }>`
   &[data-reach-dialog-content] {
     margin: 0 0 2rem 0;
+    margin-bottom: 80px;
     border: 1px solid ${({ theme }) => theme.colors.invertedContrast};
     background-color: ${({ theme }) => theme.colors.invertedContrast};
     box-shadow: 0 4px 8px 0 ${transparentize(0.95, '#191326')};
@@ -85,6 +94,7 @@ interface ModalProps {
   maxHeight?: number
   initialFocusRef?: React.RefObject<any>
   children?: React.ReactNode
+  disableBackdropClick?: boolean
 }
 
 export default function Modal({
@@ -94,6 +104,7 @@ export default function Modal({
   maxHeight = 50,
   initialFocusRef,
   children,
+  disableBackdropClick = false,
 }: ModalProps) {
   const fadeTransition = useTransition(isOpen, null, {
     config: { duration: 200 },
@@ -102,12 +113,20 @@ export default function Modal({
     leave: { opacity: 0 },
   })
 
+  const isFullscreen = minHeight === 100 && maxHeight === 100
+
   return (
     <>
       {fadeTransition.map(
         ({ item, key, props }) =>
           item && (
-            <StyledDialogOverlay key={key} style={props} onDismiss={onDismiss} initialFocusRef={initialFocusRef}>
+            <StyledDialogOverlay 
+              key={key} 
+              style={props} 
+              onDismiss={disableBackdropClick ? noop : onDismiss} 
+              {...(initialFocusRef && { initialFocusRef })}
+              isFullscreen={isFullscreen}
+            >
               <StyledDialogContent
                 aria-label="dialog content"
                 minHeight={minHeight}

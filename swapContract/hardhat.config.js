@@ -51,7 +51,7 @@ module.exports = {
     bityuan: {
       url: "https://mainnet.bityuan.com/eth",
       chainId: 2999,
-      accounts: ["0x............................................"], // 部署账户私钥
+      accounts: ["0x私钥"], // 部署账户私钥
     },
   },
 };

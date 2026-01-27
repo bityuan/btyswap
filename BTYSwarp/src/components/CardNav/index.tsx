@@ -19,6 +19,9 @@ function Nav({ activeIndex = 0 }: { activeIndex?: number }) {
         <ButtonMenuItem id="pool-nav-link" to="/pool" as={Link}>
           {t('liquidity')}
         </ButtonMenuItem>
+        <ButtonMenuItem id="lock-nav-link" to="/lock" as={Link}>
+          {t('lock')}
+        </ButtonMenuItem>
         <ButtonMenuItem id="tokenize-nav-link" to="/create-token" as={Link}>
           Tokenize
         </ButtonMenuItem>

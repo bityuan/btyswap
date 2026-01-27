@@ -8,7 +8,7 @@ import Card, { GreyCard } from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import ConfirmSwapModal from 'components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import CardNav from 'components/CardNav'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from 'components/TransactionConfirmationModal'
 import { AutoRow, RowBetween } from 'components/Row'
 import AdvancedSwapDetailsDropdown from 'components/swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/swap/confirmPriceImpactWithoutFee'
@@ -20,11 +20,12 @@ import SafeMoonWarningModal from 'components/SafeMoonWarningModal'
 import ProgressSteps from 'components/ProgressSteps'
 import Container from 'components/Container'
 
-import { INITIAL_ALLOWED_SLIPPAGE } from 'constants/index'
+import { INITIAL_ALLOWED_SLIPPAGE, ROUTER_ADDRESS } from 'constants/index'
 import { useActiveWeb3React } from 'hooks'
 import useTokenSymbol from 'hooks/useTokenSymbol'
 import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
+import { useHasPendingApproval } from 'state/transactions/hooks'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
@@ -82,44 +83,35 @@ const Swap = () => {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
+  const { wrapType, execute: wrapExecute, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
     typedValue
   )
+
+  // Wrap/Unwrap state
+  const [showWrapConfirm, setShowWrapConfirm] = useState(false)
+  const [wrapAttemptingTxn, setWrapAttemptingTxn] = useState(false)
+  const [wrapTxHash, setWrapTxHash] = useState<string | undefined>(undefined)
+  const [wrapErrorMessage, setWrapErrorMessage] = useState<string | undefined>(undefined)
+
+  const handleWrapClick = useCallback(() => {
+    setShowWrapConfirm(true)
+    setWrapErrorMessage(undefined)
+  }, [])
+
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
 
-  // 检测BTY到ERC20或ERC20到BTY的情况（需要先Wrap成WBTY）
-  const needsWrapWarning = useMemo(() => {
-    if (!chainId) return false
-    if (showWrap) return false // 如果已经是Wrap操作，不需要警告
-    
-    const inputCurrency = currencies[Field.INPUT]
-    const outputCurrency = currencies[Field.OUTPUT]
-    
-    if (!inputCurrency || !outputCurrency) return false
-    
-    const inputIsBTY = inputCurrency === ETHER
-    const outputIsBTY = outputCurrency === ETHER
-    const inputIsWBTY = inputCurrency && WETH[chainId] && currencyEquals(inputCurrency, WETH[chainId])
-    const outputIsWBTY = outputCurrency && WETH[chainId] && currencyEquals(outputCurrency, WETH[chainId])
-    
-    // BTY到ERC20（非WBTY，非BTY）或ERC20（非WBTY，非BTY）到BTY
-    // 情况1: 输入是BTY，输出不是BTY也不是WBTY
-    // 情况2: 输出是BTY，输入不是BTY也不是WBTY
-    return (inputIsBTY && !outputIsBTY && !outputIsWBTY) || (outputIsBTY && !inputIsBTY && !inputIsWBTY)
-  }, [chainId, currencies, showWrap])
-
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -128,7 +120,7 @@ const Swap = () => {
   // 动态过滤输出货币：根据输入货币类型限制输出货币选择
   const outputCurrencyFilter = useMemo(() => {
     if (!chainId) return undefined
-    
+
     const inputCurrency = currencies[Field.INPUT]
     if (!inputCurrency) return undefined
 
@@ -188,6 +180,32 @@ const Swap = () => {
     txHash: undefined,
   })
 
+  const handleWrap = useCallback(async () => {
+    if (!wrapExecute) return
+    
+    setWrapAttemptingTxn(true)
+    setWrapErrorMessage(undefined)
+    setWrapTxHash(undefined)
+
+    try {
+      const hash = await wrapExecute()
+      setWrapTxHash(hash)
+    } catch (err: any) {
+      console.error('Wrap/Unwrap failed:', err)
+      setWrapErrorMessage(err?.message || 'Transaction failed')
+      setWrapTxHash(undefined)
+    } finally {
+      setWrapAttemptingTxn(false)
+    }
+  }, [wrapExecute])
+
+  const handleWrapConfirmDismiss = useCallback(() => {
+    setShowWrapConfirm(false)
+    if (wrapTxHash) {
+      setWrapTxHash(undefined)
+    }
+  }, [wrapTxHash])
+
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -203,6 +221,21 @@ const Swap = () => {
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  
+  // Track pending approvals
+  const inputCurrency = currencies[Field.INPUT]
+  const inputToken: Token | undefined = inputCurrency instanceof Token ? inputCurrency : undefined
+  const pendingApproval = useHasPendingApproval(inputToken?.address, ROUTER_ADDRESS)
+  
+  // Track if approval is in progress (from click to transaction submission)
+  const [isApproving, setIsApproving] = useState(false)
+
+  // Reset isApproving when approval is confirmed
+  useEffect(() => {
+    if (approval === ApprovalState.APPROVED && isApproving) {
+      setIsApproving(false)
+    }
+  }, [approval, isApproving])
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -213,6 +246,23 @@ const Swap = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
+  
+  // Wrapper function for approve callback to manage isApproving state
+  const handleApprove = useCallback(async () => {
+    if (isApproving || approval !== ApprovalState.NOT_APPROVED) {
+      return
+    }
+    
+    setIsApproving(true)
+    
+    try {
+      await approveCallback()
+      // Keep isApproving true until transaction is confirmed
+    } catch (err) {
+      console.error('Approval failed:', err)
+      setIsApproving(false)
+    }
+  }, [isApproving, approval, approveCallback])
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -297,14 +347,14 @@ const Swap = () => {
   )
 
   const handleInputSelect = useCallback(
-    (inputCurrency) => {
+    (currency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
-      onCurrencySelection(Field.INPUT, inputCurrency)
-      if (inputCurrency.symbol === 'SYRUP') {
-        checkForWarning(inputCurrency.symbol, 'Selling')
+      onCurrencySelection(Field.INPUT, currency)
+      if (currency.symbol === 'SYRUP') {
+        checkForWarning(currency.symbol, 'Selling')
       }
-      if (inputCurrency.symbol === 'SAFEMOON') {
-        checkForWarning(inputCurrency.symbol, 'Selling')
+      if (currency.symbol === 'SAFEMOON') {
+        checkForWarning(currency.symbol, 'Selling')
       }
     },
     [onCurrencySelection, setApprovalSubmitted, checkForWarning]
@@ -342,9 +392,47 @@ const Swap = () => {
         onConfirm={handleConfirmWarning}
       />
       <SafeMoonWarningModal isOpen={transactionWarning.selectedToken === 'SAFEMOON'} onConfirm={handleConfirmWarning} />
-      <CardNav />
       <AppBody>
         <Wrapper id="swap-page">
+          <TransactionConfirmationModal
+            isOpen={showWrapConfirm}
+            onDismiss={handleWrapConfirmDismiss}
+            attemptingTxn={wrapAttemptingTxn}
+            hash={wrapTxHash}
+            content={() => {
+              if (wrapErrorMessage) {
+                return <TransactionErrorContent message={wrapErrorMessage} onDismiss={handleWrapConfirmDismiss} />
+              }
+              return (
+                <ConfirmationModalContent
+                  title={wrapType === WrapType.WRAP ? 'Wrap' : 'Unwrap'}
+                  onDismiss={handleWrapConfirmDismiss}
+                  topContent={() => (
+                    <AutoColumn gap="md">
+                      <Text fontSize="16px" textAlign="center">
+                        {wrapType === WrapType.WRAP 
+                          ? `Wrap ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${currencies[Field.INPUT]?.symbol} to ${currencies[Field.OUTPUT]?.symbol}`
+                          : `Unwrap ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${currencies[Field.INPUT]?.symbol} to ${currencies[Field.OUTPUT]?.symbol}`}
+                      </Text>
+                    </AutoColumn>
+                  )}
+                  bottomContent={() => (
+                    <Button
+                      variant="primary"
+                      onClick={handleWrap}
+                      disabled={wrapAttemptingTxn || Boolean(wrapInputError)}
+                      width="100%"
+                    >
+                      {wrapAttemptingTxn ? 'Processing...' : (wrapType === WrapType.WRAP ? 'Wrap' : 'Unwrap')}
+                    </Button>
+                  )}
+                />
+              )
+            }}
+            pendingText={wrapType === WrapType.WRAP 
+              ? `Wrapping ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${currencies[Field.INPUT]?.symbol}`
+              : `Unwrapping ${parsedAmounts[Field.INPUT]?.toSignificant(6)} ${currencies[Field.INPUT]?.symbol}`}
+          />
           <ConfirmSwapModal
             isOpen={showConfirm}
             trade={trade}
@@ -358,16 +446,7 @@ const Swap = () => {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-          <PageHeader
-            title={t('exchange')}
-            description={needsWrapWarning ? undefined : t('tradeTokensInstant')}
-          >
-            {needsWrapWarning && (
-              <Text color="failure" fontSize="14px" mt="8px">
-                {t('wrapBTYSteps') || '兑换步骤：1. 先将BTY兑换成WBTY。2. 再用WBTY兑换目标代币。'}
-              </Text>
-            )}
-          </PageHeader>
+          <PageHeader title={t('exchange')} description={t('tradeTokensInstant')} />
           <CardBody>
             <AutoColumn gap="md">
               <CurrencyInputPanel
@@ -462,7 +541,7 @@ const Swap = () => {
             </AutoColumn>
             <BottomGrouping>
               {showWrap ? (
-                <Button disabled={Boolean(wrapInputError)} onClick={onWrap} width="100%">
+                <Button disabled={Boolean(wrapInputError)} onClick={handleWrapClick} width="100%">
                   {wrapInputError ??
                     (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                 </Button>
@@ -473,14 +552,14 @@ const Swap = () => {
               ) : showApproveFlow ? (
                 <RowBetween>
                   <Button
-                    onClick={approveCallback}
-                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
+                    onClick={handleApprove}
+                    disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted || isApproving || pendingApproval}
                     style={{ width: '48%' }}
                     variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
                   >
-                    {approval === ApprovalState.PENDING ? (
+                    {approval === ApprovalState.PENDING || isApproving || pendingApproval ? (
                       <AutoRow gap="6px" justify="center">
-                        Approving <Loader stroke="white" />
+                        授权中... <Loader stroke="white" />
                       </AutoRow>
                     ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                       'Approved'
@@ -507,8 +586,7 @@ const Swap = () => {
                     disabled={
                       !isValid ||
                       approval !== ApprovalState.APPROVED ||
-                      (priceImpactSeverity > 3 && !isExpertMode) ||
-                      needsWrapWarning
+                      (priceImpactSeverity > 3 && !isExpertMode)
                     }
                     variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
                   >
@@ -536,8 +614,7 @@ const Swap = () => {
                   disabled={
                     !isValid ||
                     (priceImpactSeverity > 3 && !isExpertMode) ||
-                    !!swapCallbackError ||
-                    needsWrapWarning
+                    !!swapCallbackError
                   }
                   variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
                   width="100%"

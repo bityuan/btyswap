@@ -21,7 +21,7 @@ accounts: ["您的私钥"],
 
 ### 2. 部署到Bityuan链
 ```bash
-npx hardhat run scripts/deploy-simple.js --network bityuan
+npx hardhat run scripts/deploy-correct-flow.js --network bityuan
 ```
 
 ## 部署的合约

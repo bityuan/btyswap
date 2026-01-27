@@ -11,9 +11,11 @@ import Pool from './Pool'
 import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
 import CreateToken from './CreateToken'
+import Lock from './Lock'
 
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Menu from '../components/Menu'
+import BottomNav from '../components/BottomNav'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -32,10 +34,12 @@ const BodyWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
   padding: 0 16px;
+  padding-bottom: 80px;
   
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-bottom: 0;
     padding: 0 24px;
+    padding-bottom: 0;
   }
 `
 
@@ -54,6 +58,7 @@ export default function App() {
                 <Route exact path="/add" component={AddLiquidity} />
                 <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
                 <Route exact strict path="/create-token" component={CreateToken} />
+                <Route exact strict path="/lock" component={Lock} />
 
                 {/* Redirection: These old routes are still used in the code base */}
                 <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
@@ -64,6 +69,7 @@ export default function App() {
               </Switch>
             </Web3ReactManager>
           </BodyWrapper>
+          <BottomNav />
           <VersionBar />
         </AppWrapper>
       </HashRouter>

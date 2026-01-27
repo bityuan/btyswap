@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Card as UIKitCard, CardBody, Text } from '@pancakeswap-libs/uikit'
 import { darken } from 'polished'
 import { ChevronDown, ChevronUp, Copy } from 'react-feather'
@@ -67,9 +67,19 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 
   const [showMore, setShowMore] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   // 格式化地址显示：前4位...后6位
   const formatAddress = (address: string) => {
@@ -80,10 +90,19 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
   // 复制到剪贴板
   const copyToClipboard = async (text: string) => {
     try {
+      // 清理之前的定时器
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text)
         setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
+        timeoutRef.current = setTimeout(() => {
+          setCopySuccess(false)
+          timeoutRef.current = null
+        }, 2000)
       } else {
         const textArea = document.createElement('textarea')
         textArea.value = text
@@ -97,7 +116,10 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
         document.body.removeChild(textArea)
         if (successful) {
           setCopySuccess(true)
-          setTimeout(() => setCopySuccess(false), 2000)
+          timeoutRef.current = setTimeout(() => {
+            setCopySuccess(false)
+            timeoutRef.current = null
+          }, 2000)
         }
       }
     } catch (err) {
@@ -205,9 +227,19 @@ export default function FullPositionCard({ pair, removeOnly }: PositionCardProps
 
   const [showMore, setShowMore] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+
+  // 清理定时器
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   // 格式化地址显示：前4位...后4位
   const formatAddress = (address: string) => {
@@ -218,10 +250,19 @@ export default function FullPositionCard({ pair, removeOnly }: PositionCardProps
   // 复制到剪贴板
   const copyToClipboard = async (text: string) => {
     try {
+      // 清理之前的定时器
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text)
         setCopySuccess(true)
-        setTimeout(() => setCopySuccess(false), 2000)
+        timeoutRef.current = setTimeout(() => {
+          setCopySuccess(false)
+          timeoutRef.current = null
+        }, 2000)
       } else {
         const textArea = document.createElement('textarea')
         textArea.value = text
@@ -235,7 +276,10 @@ export default function FullPositionCard({ pair, removeOnly }: PositionCardProps
         document.body.removeChild(textArea)
         if (successful) {
           setCopySuccess(true)
-          setTimeout(() => setCopySuccess(false), 2000)
+          timeoutRef.current = setTimeout(() => {
+            setCopySuccess(false)
+            timeoutRef.current = null
+          }, 2000)
         }
       }
     } catch (err) {

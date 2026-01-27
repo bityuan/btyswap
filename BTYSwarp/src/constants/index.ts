@@ -1,6 +1,6 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@btyswap-libs/sdk'
 // TODO: BTY正式链
-export const ROUTER_ADDRESS = '0xb7230033d833d2cB6AA801E857c74465B4AcF272'
+export const ROUTER_ADDRESS = '0xF7F7b487C0E0AfDbe5681C1D2f4CEC7C6e0DAA8F'
 // TODO: BTY测试链
 // export const ROUTER_ADDRESS = '0x5303511A6a32d01BF7B42C04018e087ab9303363'
 
@@ -15,8 +15,8 @@ export const PRIVATE_CHAIN_CONFIG = {
   },
   rpcUrls: ['https://mainnet.bityuan.com/eth'],
   blockExplorerUrls: ['https://mainnet.bityuan.com/'],
-  multicallAddress: '0x1Eb26f8eef1a433b241bE8Aa60bFe6408EC8Ac8D',
-  routerAddress: '0xb7230033d833d2cB6AA801E857c74465B4AcF272',
+  multicallAddress: '0x98d25EdF17CAE684a146eFe411C2B083FBD238Df',
+  routerAddress: '0xF7F7b487C0E0AfDbe5681C1D2f4CEC7C6e0DAA8F',
 } as const
 
 // 直接使用 SDK 中的 WETH[ChainId.MAINNET] 作为 WBTY

@@ -1,30 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, CardBody, Text as UIKitText } from '@pancakeswap-libs/uikit'
+import { Button, Text as UIKitText, CardBody } from '@pancakeswap-libs/uikit'
+import { useTranslation } from 'react-i18next'
 import { useActiveWeb3React } from 'hooks'
 import { ethers } from 'ethers'
-import CardNav from 'components/CardNav'
 import Container from 'components/Container'
+import PageHeader from 'components/PageHeader'
 import { AutoColumn } from 'components/Column'
 import AppBody from '../AppBody'
 import { ERC20_CONTRACT_ABI, ERC20_CONTRACT_BYTECODE } from '../../constants/erc20Contract'
+import TransactionConfirmationModal, { ConfirmationModalContent, TransactionErrorContent } from '../../components/TransactionConfirmationModal'
 
 type TabType = 'deploy' | 'mint'
 
-const Wrapper = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  
-  @media (max-width: 768px) {
-    padding: 0 8px;
-  }
-`
-
 const TabContainer = styled.div`
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: 5px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
 `
 
@@ -33,7 +24,8 @@ const Tab = styled.button<{ active: boolean }>`
   padding: 12px 16px;
   background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
   color: ${({ active, theme }) => active ? 'white' : theme.colors.text};
-  border: none;
+  border: 1px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.borderColor};
+  border-radius: 8px;
   border-bottom: 2px solid ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
   font-size: 16px;
   font-weight: 600;
@@ -119,6 +111,7 @@ const FORBIDDEN_TOKENS = {
 }
 
 export default function CreateToken() {
+    const { t } = useTranslation()
     const { account, library } = useActiveWeb3React()
     const [activeTab, setActiveTab] = useState<TabType>('deploy')
 
@@ -130,8 +123,9 @@ export default function CreateToken() {
     const [deployError, setDeployError] = useState('')
     const [deploySuccess, setDeploySuccess] = useState('')
     const [deployedAddress, setDeployedAddress] = useState('')
-    const [deployTxHash, setDeployTxHash] = useState('')
+    const [deployTxHash, setDeployTxHash] = useState<string | undefined>(undefined)
     const [isDeploying, setIsDeploying] = useState(false)
+    const [showDeployConfirm, setShowDeployConfirm] = useState(false)
 
     // 增发相关状态
     const [contractAddress, setContractAddress] = useState('')
@@ -139,8 +133,9 @@ export default function CreateToken() {
     const [mintError, setMintError] = useState('')
     const [mintSuccess, setMintSuccess] = useState('')
     const [isMinting, setIsMinting] = useState(false)
-    const [mintTxHash, setMintTxHash] = useState('')
+    const [mintTxHash, setMintTxHash] = useState<string | undefined>(undefined)
     const [isLoadingTokenInfo, setIsLoadingTokenInfo] = useState(false)
+    const [showMintConfirm, setShowMintConfirm] = useState(false)
     const [tokenInfo, setTokenInfo] = useState<{
         name: string
         symbol: string
@@ -187,7 +182,7 @@ export default function CreateToken() {
     }
 
     // 从交易收据获取合约地址（类似Hardhat脚本的处理方式）
-    const getContractAddressFromReceipt = async (txHash: string): Promise<string | null> => {
+    const getContractAddressFromReceipt = useCallback(async (txHash: string): Promise<string | null> => {
         try {
             if (!library) return null
             const receipt = await library.getTransactionReceipt(txHash)
@@ -195,10 +190,10 @@ export default function CreateToken() {
         } catch {
             return null
         }
-    }
+    }, [library])
 
     // 验证交易是否真的成功
-    const verifyTransactionSuccess = async (txHash: string): Promise<boolean> => {
+    const verifyTransactionSuccess = useCallback(async (txHash: string): Promise<boolean> => {
         try {
             // 尝试获取交易收据
             if (!library) return false
@@ -207,7 +202,7 @@ export default function CreateToken() {
         } catch (error) {
             return false
         }
-    }
+    }, [library])
 
     // 复制文本到剪贴板（兼容性处理）
     const copyToClipboard = async (text: string) => {
@@ -236,10 +231,10 @@ export default function CreateToken() {
         }
     }
 
-    const fetchTokenInfo = async (address: string) => {
+    const fetchTokenInfo = useCallback(async (address: string) => {
         if (!library || !ethers.utils.isAddress(address)) {
             setTokenInfo(null)
-            setMintError('请输入有效的合约地址')
+            setMintError(t('pleaseEnterValidContractAddress'))
             return
         }
 
@@ -269,16 +264,16 @@ export default function CreateToken() {
         } catch (err: any) {
             setTokenInfo(null)
             if (err.message?.includes('call revert')) {
-                setMintError('该地址不是有效的ERC20合约，或合约不支持我们的接口')
+                setMintError(t('invalidERC20Contract'))
             } else if (err.message?.includes('network')) {
-                setMintError('网络连接失败，请检查网络设置')
+                setMintError(t('networkConnectionFailed'))
             } else {
-                setMintError(`无法获取代币信息: ${err.message || '未知错误'}`)
+                setMintError(t('cannotGetTokenInfoError', { error: err.message || t('unknownError') }))
             }
         } finally {
             setIsLoadingTokenInfo(false)
         }
-    }
+    }, [library, t])
 
     const handleContractAddressChange = (address: string) => {
         setContractAddress(address)
@@ -289,55 +284,61 @@ export default function CreateToken() {
         if (ethers.utils.isAddress(address)) {
             fetchTokenInfo(address)
         } else {
-            setMintError('请输入有效的合约地址')
+            setMintError(t('pleaseEnterValidContractAddress'))
         }
     }
 
-    const handleDeploy = async () => {
+    const handleDeployClick = () => {
         if (!account) {
-            setDeployError('请先连接钱包')
+            setDeployError(t('pleaseConnectWallet'))
             return
         }
 
         if (!library) {
-            setDeployError('无法获取Web3库')
+            setDeployError(t('cannotGetWeb3'))
             return
         }
 
         if (!tokenName || !tokenSymbol || !initialSupply) {
-            setDeployError('请填写所有必填字段')
+            setDeployError(t('pleaseFillAllFields'))
             return
         }
 
         if (!validateTokenName(tokenName)) {
-            setDeployError('代币名称包含禁止使用的关键词')
+            setDeployError(t('tokenNameContainsForbidden'))
             return
         }
 
         if (!validateTokenSymbol(tokenSymbol)) {
-            setDeployError('代币符号已被保留，请使用其他符号')
+            setDeployError(t('tokenSymbolReserved'))
             return
         }
-
-        const decimalsNum = 18 // 默认使用18位小数
 
         const supplyNum = parseFloat(initialSupply)
         if (Number.isNaN(supplyNum) || supplyNum <= 0) {
-            setDeployError('初始供应量必须大于0')
+            setDeployError(t('initialSupplyMustBeGreaterThanZero'))
             return
         }
+
+        setShowDeployConfirm(true)
+        setDeployError('')
+    }
+
+    const handleDeploy = useCallback(async () => {
+        if (!account || !library) return
 
         setIsDeploying(true)
         setDeployError('')
         setDeploySuccess('')
         setDeployedAddress('')
-        setDeployTxHash('')
+        setDeployTxHash(undefined)
 
         try {
             const signer = library.getSigner()
 
             // 将初始供应量转换为wei单位（用户输入的数量就是最终发行量）
             const initialSupplyWei = ethers.utils.parseUnits(initialSupply, 0)
+            const decimalsNum = 18 // 默认使用18位小数
 
             // 创建合约工厂
             const factory = new ethers.ContractFactory(
@@ -346,7 +347,7 @@ export default function CreateToken() {
                 signer
             )
 
-            setDeploySuccess('正在部署合约，请确认钱包交易...')
+            setDeploySuccess(t('deployingContract'))
 
             // 部署合约
             try {
@@ -361,19 +362,26 @@ export default function CreateToken() {
                 // 获取部署交易的哈希
                 const txHash = contract.deployTransaction.hash
                 setDeployTxHash(txHash)
-                setDeploySuccess(`合约部署中，交易哈希: ${txHash}`)
+                setDeploySuccess(t('contractDeploying', { txHash }))
+                setShowDeployConfirm(true)
 
                 // 等待合约部署完成
                 try {
                     await contract.deployed()
                     setDeployedAddress(contract.address)
-                    setDeploySuccess('代币部署成功！')
+                    setDeploySuccess(t('tokenDeploySuccess'))
+                    setIsDeploying(false)
 
                     // 清空表单
                     setTokenName('')
                     setTokenSymbol('')
                     setInitialSupply('')
                     setIsMintable(true)
+
+                    // 交易成功后自动关闭确认模态框
+                    setTimeout(() => {
+                        setShowDeployConfirm(false)
+                    }, 2000) // 2秒后自动关闭，让用户看到成功信息
                 } catch (deployErr: any) {
                     // 检查是否是hash mismatch错误，但合约实际部署成功
                     const isMismatch = isHashMismatchError(deployErr)
@@ -384,7 +392,7 @@ export default function CreateToken() {
                             const deployedContractAddress = await getContractAddressFromReceipt(deployErr.transactionHash)
                             if (deployedContractAddress) {
                                 setDeployedAddress(deployedContractAddress)
-                                setDeploySuccess(handleHashMismatchSuccess('部署', '代币部署成功！'))
+                                setDeploySuccess(handleHashMismatchSuccess('部署', t('tokenDeploySuccess')))
 
                                 // 清空表单
                                 setTokenName('')
@@ -407,13 +415,19 @@ export default function CreateToken() {
                         const deployedContractAddress = await getContractAddressFromReceipt(deployErr.transactionHash)
                         if (deployedContractAddress) {
                             setDeployedAddress(deployedContractAddress)
-                            setDeploySuccess(handleHashMismatchSuccess('部署', '代币部署成功！'))
+                            setDeploySuccess(handleHashMismatchSuccess('部署', t('tokenDeploySuccess')))
+                            setIsDeploying(false)
 
                             // 清空表单
                             setTokenName('')
                             setTokenSymbol('')
                             setInitialSupply('')
                             setIsMintable(true)
+
+                            // 交易成功后自动关闭确认模态框
+                            setTimeout(() => {
+                                setShowDeployConfirm(false)
+                            }, 2000) // 2秒后自动关闭，让用户看到成功信息
                             return
                         }
                     }
@@ -422,61 +436,112 @@ export default function CreateToken() {
             }
 
         } catch (err: any) {
-            setDeployError(`部署失败: ${err.message || '未知错误'}`)
+            setDeployError(t('deployFailed', { error: err.message || t('unknownError') }))
             setDeploySuccess('')
             setDeployedAddress('')
-            setDeployTxHash('')
-        } finally {
+            setDeployTxHash(undefined)
             setIsDeploying(false)
         }
-    }
+    }, [account, library, tokenName, tokenSymbol, initialSupply, isMintable, t, getContractAddressFromReceipt])
 
-    const handleMint = async () => {
+    const handleDeployConfirmDismiss = useCallback(() => {
+        setShowDeployConfirm(false)
+        if (deployTxHash) {
+            setDeployTxHash(undefined)
+        }
+    }, [deployTxHash])
+
+    const deployModalContent = useCallback(() => {
+        if (deployError) {
+            return <TransactionErrorContent message={deployError} onDismiss={handleDeployConfirmDismiss} />
+        }
+        return (
+            <ConfirmationModalContent
+                title={t('deployToken') || 'Deploy Token'}
+                onDismiss={handleDeployConfirmDismiss}
+                topContent={() => (
+                    <AutoColumn gap="md">
+                        <UIKitText fontSize="16px" textAlign="center">
+                            {t('confirmDeploy') || 'Are you sure you want to deploy this token?'}
+                        </UIKitText>
+                        <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
+                            {t('tokenName')}: {tokenName}
+                        </UIKitText>
+                        <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
+                            {t('tokenSymbol')}: {tokenSymbol}
+                        </UIKitText>
+                        <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
+                            {t('initialSupply')}: {initialSupply}
+                        </UIKitText>
+                    </AutoColumn>
+                )}
+                bottomContent={() => (
+                    <Button
+                        variant="primary"
+                        onClick={handleDeploy}
+                        disabled={isDeploying}
+                        width="100%"
+                    >
+                        {isDeploying ? (t('deploying') || 'Deploying...') : (t('confirm') || 'Confirm')}
+                    </Button>
+                )}
+            />
+        )
+    }, [deployError, handleDeployConfirmDismiss, t, tokenName, tokenSymbol, initialSupply, handleDeploy, isDeploying])
+
+    const handleMintClick = () => {
         if (!account || !library) {
-            setMintError('请先连接钱包')
+            setMintError(t('pleaseConnectWallet'))
             return
         }
 
         if (!contractAddress) {
-            setMintError('请输入合约地址')
+            setMintError(t('pleaseEnterContractAddress'))
             return
         }
 
         if (!ethers.utils.isAddress(contractAddress)) {
-            setMintError('请输入有效的合约地址')
+            setMintError(t('pleaseEnterValidContractAddress'))
             return
         }
 
         if (!tokenInfo) {
-            setMintError('无法获取代币信息，请检查合约地址')
+            setMintError(t('cannotGetTokenInfo'))
             return
         }
 
         if (!tokenInfo.mintable) {
-            setMintError('该代币不支持增发功能')
+            setMintError(t('tokenNotSupportMint'))
             return
         }
 
         if (tokenInfo.owner.toLowerCase() !== account.toLowerCase()) {
-            setMintError('只有代币合约的owner才能进行增发操作')
+            setMintError(t('onlyOwnerCanMintSimple'))
             return
         }
 
         if (!mintAmount) {
-            setMintError('请输入增发数量')
+            setMintError(t('pleaseEnterMintAmount'))
             return
         }
 
         const amountNum = parseFloat(mintAmount)
         if (Number.isNaN(amountNum) || amountNum <= 0) {
-            setMintError('增发数量必须大于0')
+            setMintError(t('mintAmountMustBeGreaterThanZero'))
             return
         }
+
+        setShowMintConfirm(true)
+        setMintError('')
+    }
+
+    const handleMint = useCallback(async () => {
+        if (!account || !library || !contractAddress || !tokenInfo || !mintAmount) return
 
         setIsMinting(true)
         setMintError('')
         setMintSuccess('')
-        setMintTxHash('')
+        setMintTxHash(undefined)
 
         try {
             const signer = library.getSigner()
@@ -485,25 +550,32 @@ export default function CreateToken() {
             // 将增发数量转换为wei单位
             const mintAmountWei = ethers.utils.parseUnits(mintAmount, tokenInfo.decimals)
 
-            setMintSuccess('正在增发代币，请确认钱包交易...')
+            setMintSuccess(t('mintingToken'))
 
             // 调用mint函数，增发给调用者自己
             try {
                 const tx = await contract.mint(account, mintAmountWei)
 
                 setMintTxHash(tx.hash)
-                setMintSuccess(`增发交易已提交，交易哈希: ${tx.hash}`)
+                setMintSuccess(t('mintTxSubmitted', { txHash: tx.hash }))
+                setShowMintConfirm(true)
 
                 // 等待交易确认
                 try {
                     await tx.wait()
-                    setMintSuccess(`增发成功！已向您的地址增发 ${mintAmount} 个 ${tokenInfo.symbol} 代币`)
+                    setMintSuccess(t('mintSuccess', { amount: mintAmount, symbol: tokenInfo.symbol }))
+                    setIsMinting(false)
 
                     // 清空增发数量
                     setMintAmount('')
 
                     // 重新获取代币信息
                     fetchTokenInfo(contractAddress)
+
+                    // 交易成功后自动关闭确认模态框
+                    setTimeout(() => {
+                        setShowMintConfirm(false)
+                    }, 2000) // 2秒后自动关闭，让用户看到成功信息
                 } catch (waitErr: any) {
                     // 检查是否是hash mismatch错误，但交易实际成功
                     const isMismatch = isHashMismatchError(waitErr)
@@ -515,13 +587,19 @@ export default function CreateToken() {
                             const isSuccess = await verifyTransactionSuccess(txHash)
 
                             if (isSuccess) {
-                                setMintSuccess(handleHashMismatchSuccess('增发', `增发成功！已向您的地址增发 ${mintAmount} 个 ${tokenInfo.symbol} 代币`))
+                                setMintSuccess(handleHashMismatchSuccess('增发', t('mintSuccess', { amount: mintAmount, symbol: tokenInfo.symbol })))
+                                setIsMinting(false)
 
                                 // 清空增发数量
                                 setMintAmount('')
 
                                 // 重新获取代币信息
                                 fetchTokenInfo(contractAddress)
+
+                                // 交易成功后自动关闭确认模态框
+                                setTimeout(() => {
+                                    setShowMintConfirm(false)
+                                }, 2000) // 2秒后自动关闭，让用户看到成功信息
                                 return
                             }
                         }
@@ -539,7 +617,7 @@ export default function CreateToken() {
                         const isSuccess = await verifyTransactionSuccess(txHash)
 
                         if (isSuccess) {
-                            setMintSuccess(handleHashMismatchSuccess('增发', `增发成功！已向您的地址增发 ${mintAmount} 个 ${tokenInfo.symbol} 代币`))
+                            setMintSuccess(handleHashMismatchSuccess('增发', t('mintSuccess', { amount: mintAmount, symbol: tokenInfo.symbol })))
 
                             // 清空增发数量
                             setMintAmount('')
@@ -554,333 +632,387 @@ export default function CreateToken() {
             }
 
         } catch (err: any) {
-            setMintError(`增发失败: ${err.message || '未知错误'}`)
+            setMintError(t('mintFailed', { error: err.message || t('unknownError') }))
             setMintSuccess('')
-            setMintTxHash('')
-        } finally {
+            setMintTxHash(undefined)
             setIsMinting(false)
         }
-    }
+    }, [account, library, contractAddress, tokenInfo, mintAmount, t, fetchTokenInfo, verifyTransactionSuccess])
+
+    const handleMintConfirmDismiss = useCallback(() => {
+        setShowMintConfirm(false)
+        if (mintTxHash) {
+            setMintTxHash(undefined)
+        }
+    }, [mintTxHash])
+
+    const mintModalContent = useCallback(() => {
+        if (mintError) {
+            return <TransactionErrorContent message={mintError} onDismiss={handleMintConfirmDismiss} />
+        }
+        return (
+            <ConfirmationModalContent
+                title={t('mintToken') || 'Mint Token'}
+                onDismiss={handleMintConfirmDismiss}
+                topContent={() => (
+                    <AutoColumn gap="md">
+                        <UIKitText fontSize="16px" textAlign="center">
+                            {t('confirmMint') || 'Are you sure you want to mint tokens?'}
+                        </UIKitText>
+                        {tokenInfo && (
+                            <>
+                                <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
+                                    {t('tokenSymbol')}: {tokenInfo.symbol}
+                                </UIKitText>
+                                <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
+                                    {t('mintAmount')}: {mintAmount}
+                                </UIKitText>
+                            </>
+                        )}
+                    </AutoColumn>
+                )}
+                bottomContent={() => (
+                    <Button
+                        variant="primary"
+                        onClick={handleMint}
+                        disabled={isMinting}
+                        width="100%"
+                    >
+                        {isMinting ? (t('minting') || 'Minting...') : (t('confirm') || 'Confirm')}
+                    </Button>
+                )}
+            />
+        )
+    }, [mintError, handleMintConfirmDismiss, t, tokenInfo, mintAmount, handleMint, isMinting])
+
+    const deployPendingText = `Deploying ${tokenSymbol} token`
+    const mintPendingText = `Minting ${mintAmount} ${tokenInfo?.symbol || ''} tokens`
 
     return (
         <Container>
-            <CardNav activeIndex={2} />
             <AppBody>
-                <Wrapper>
-                    <CardBody>
-                        <AutoColumn gap="20px">
-                            <UIKitText fontSize="24px" fontWeight="bold" textAlign="center">
-                                Tokenize
+                <PageHeader title='Tokenize' description={t('manageERC20OnBTYChain')} showSettings={false} />
+                <TransactionConfirmationModal
+                    isOpen={showDeployConfirm}
+                    onDismiss={handleDeployConfirmDismiss}
+                    attemptingTxn={isDeploying}
+                    hash={deployTxHash}
+                    content={deployModalContent}
+                    pendingText={deployPendingText}
+                />
+                <TransactionConfirmationModal
+                    isOpen={showMintConfirm}
+                    onDismiss={handleMintConfirmDismiss}
+                    attemptingTxn={isMinting}
+                    hash={mintTxHash}
+                    content={mintModalContent}
+                    pendingText={mintPendingText}
+                />
+                <>
+                    <TabContainer>
+                        <Tab
+                            active={activeTab === 'deploy'}
+                            onClick={() => setActiveTab('deploy')}
+                        >
+                            {t('deployToken')}
+                        </Tab>
+                        <Tab
+                            active={activeTab === 'mint'}
+                            onClick={() => setActiveTab('mint')}
+                        >
+                            {t('mintToken')}
+                        </Tab>
+                    </TabContainer>
+
+                    {activeTab === 'deploy' ? (
+                        <CardBody>
+                            <AutoColumn gap="5px">
+                            <UIKitText fontSize="18px" fontWeight="bold" marginBottom="8px">
+                                {t('createNewERC20Token')}
                             </UIKitText>
 
-                            <UIKitText fontSize="14px" color="textSubtle" textAlign="center">
-                                在BTY Chain上管理您的ERC20代币
+                            <UIKitText fontSize="14px" color="textSubtle" marginBottom="16px">
+                                {t('deployYourOwnERC20')}
                             </UIKitText>
 
-                            <>
-                                <TabContainer>
-                                        <Tab
-                                            active={activeTab === 'deploy'}
-                                            onClick={() => setActiveTab('deploy')}
+                            <div>
+                                <Label>{t('tokenNameLabel')}</Label>
+                                <StyledInput
+                                    type="text"
+                                    placeholder={t('tokenNamePlaceholder')}
+                                    value={tokenName}
+                                    onChange={(e) => setTokenName(e.target.value)}
+                                />
+                            </div>
+
+                            <div>
+                                <Label>{t('tokenSymbolLabel')}</Label>
+                                <StyledInput
+                                    type="text"
+                                    placeholder={t('tokenSymbolPlaceholder')}
+                                    value={tokenSymbol}
+                                    onChange={(e) => setTokenSymbol(e.target.value.toUpperCase())}
+                                    maxLength={10}
+                                />
+                            </div>
+
+
+
+                            <div>
+                                <Label>{t('initialSupplyLabel')}</Label>
+                                <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
+                                    {t('initialSupplyDesc')}
+                                </UIKitText>
+                                <StyledInput
+                                    type="text"
+                                    placeholder={t('initialSupplyPlaceholder')}
+                                    value={initialSupply}
+                                    onChange={(e) => setInitialSupply(e.target.value)}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                <input
+                                    type="checkbox"
+                                    id="mintable"
+                                    checked={isMintable}
+                                    onChange={(e) => setIsMintable(e.target.checked)}
+                                    style={{ width: '16px', height: '16px' }}
+                                />
+                                <Label htmlFor="mintable" style={{ marginBottom: '0', cursor: 'pointer' }}>
+                                    {t('supportMintable')}
+                                </Label>
+                            </div>
+
+                            <InfoBox>
+                                <strong>{t('forbiddenTokensTitle')}</strong><br />
+                                {t('forbiddenTokensList')}
+                            </InfoBox>
+                            {deployError && <ErrorText>{deployError}</ErrorText>}
+                            {deploySuccess && <SuccessText>{deploySuccess}</SuccessText>}
+
+                            <Button
+                                onClick={handleDeployClick}
+                                disabled={!tokenName || !tokenSymbol || !initialSupply || isDeploying}
+                                width="100%"
+                                variant="primary"
+                            >
+                                {t('createToken')}
+                            </Button>
+
+                            {deployedAddress && (
+                                <div style={{
+                                    marginTop: '16px',
+                                    padding: '16px',
+                                    background: '#f8f9fa',
+                                    borderRadius: '8px',
+                                    wordWrap: 'break-word',
+                                    overflowWrap: 'break-word',
+                                    maxWidth: '100%'
+                                }}>
+                                    <UIKitText fontSize="14px" fontWeight="bold" marginBottom="8px">
+                                        {t('deploySuccess')}
+                                    </UIKitText>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                                        <UIKitText fontSize="12px" color="textSubtle">
+                                            {t('contractAddress')}{deployedAddress.substring(0, 10)}...{deployedAddress.substring(deployedAddress.length - 8)}
+                                        </UIKitText>
+                                        <Button
+                                            size="sm"
+                                            variant="tertiary"
+                                            onClick={async () => {
+                                                await copyToClipboard(deployedAddress)
+                                            }}
+                                            style={{ padding: '4px 8px', fontSize: '10px' }}
                                         >
-                                            发行代币
-                                        </Tab>
-                                        <Tab
-                                            active={activeTab === 'mint'}
-                                            onClick={() => setActiveTab('mint')}
-                                        >
-                                            增发代币
-                                        </Tab>
-                                    </TabContainer>
-
-                                    {activeTab === 'deploy' ? (
-                                        <AutoColumn gap="16px">
-                                            <UIKitText fontSize="18px" fontWeight="bold" marginBottom="8px">
-                                                创建新的ERC20代币
-                                            </UIKitText>
-
-                                            <UIKitText fontSize="14px" color="textSubtle" marginBottom="16px">
-                                                在BTY Chain上部署您自己的ERC20代币合约
-                                            </UIKitText>
-
-                                            <div>
-                                                <Label>代币名称 *</Label>
-                                                <StyledInput
-                                                    type="text"
-                                                    placeholder="例如: My Token"
-                                                    value={tokenName}
-                                                    onChange={(e) => setTokenName(e.target.value)}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <Label>代币符号 *</Label>
-                                                <StyledInput
-                                                    type="text"
-                                                    placeholder="例如: MTK"
-                                                    value={tokenSymbol}
-                                                    onChange={(e) => setTokenSymbol(e.target.value.toUpperCase())}
-                                                    maxLength={10}
-                                                />
-                                            </div>
-
-
-
-                                            <div>
-                                                <Label>初始供应量 *</Label>
-                                                <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
-                                                    输入您想要发行的代币总数量（例如：500000000 表示发行5亿个代币）
+                                            {t('copy')}
+                                        </Button>
+                                    </div>
+                                    {deployTxHash && (
+                                        <>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                                                <UIKitText fontSize="12px" color="textSubtle">
+                                                    {t('transactionHash')}{deployTxHash.substring(0, 10)}...{deployTxHash.substring(deployTxHash.length - 8)}
                                                 </UIKitText>
-                                                <StyledInput
-                                                    type="text"
-                                                    placeholder="例如: 500000000"
-                                                    value={initialSupply}
-                                                    onChange={(e) => setInitialSupply(e.target.value)}
-                                                />
+                                                <Button
+                                                    size="sm"
+                                                    variant="tertiary"
+                                                    onClick={async () => {
+                                                        await copyToClipboard(deployTxHash)
+                                                    }}
+                                                    style={{ padding: '4px 8px', fontSize: '10px' }}
+                                                >
+                                                    {t('copy')}
+                                                </Button>
                                             </div>
-
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                                                <input
-                                                    type="checkbox"
-                                                    id="mintable"
-                                                    checked={isMintable}
-                                                    onChange={(e) => setIsMintable(e.target.checked)}
-                                                    style={{ width: '16px', height: '16px' }}
-                                                />
-                                                <Label htmlFor="mintable" style={{ marginBottom: '0', cursor: 'pointer' }}>
-                                                    支持增发功能（部署后可以增加代币供应量）
-                                                </Label>
-                                            </div>
-
-                                            <InfoBox>
-                                                <strong>禁止使用的代币名称/符号：</strong><br />
-                                                BTC, ETH, BNB, BTY, USDT, USDC, DAI, CAKE, WBTC, WETH, WBTY 等主流代币
-                                            </InfoBox>
-                                            {deployError && <ErrorText>{deployError}</ErrorText>}
-                                            {deploySuccess && <SuccessText>{deploySuccess}</SuccessText>}
-
                                             <Button
-                                                onClick={handleDeploy}
-                                                disabled={!tokenName || !tokenSymbol || !initialSupply || isDeploying}
-                                                width="100%"
-                                                variant="primary"
+                                                size="sm"
+                                                variant="secondary"
+                                                onClick={() => window.open(`https://mainnet.bityuan.com/tx/${deployTxHash}`, '_blank')}
+                                                style={{ marginTop: '8px' }}
                                             >
-                                                {isDeploying ? '部署中...' : '创建代币'}
+                                                {t('viewTransactionOnExplorer')}
                                             </Button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                        </AutoColumn>
+                        </CardBody>
+                    ) : (
+                        <CardBody>
+                            <AutoColumn gap="16px">
+                                <UIKitText fontSize="18px" fontWeight="bold" marginBottom="8px">
+                                    {t('mintERC20Token')}
+                                </UIKitText>
 
-                                            {deployedAddress && (
-                                                <div style={{
-                                                    marginTop: '16px',
-                                                    padding: '16px',
-                                                    background: '#f8f9fa',
-                                                    borderRadius: '8px',
-                                                    wordWrap: 'break-word',
-                                                    overflowWrap: 'break-word',
-                                                    maxWidth: '100%'
-                                                }}>
-                                                    <UIKitText fontSize="14px" fontWeight="bold" marginBottom="8px">
-                                                        部署成功！
-                                                    </UIKitText>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                                                        <UIKitText fontSize="12px" color="textSubtle">
-                                                            合约地址: {deployedAddress.substring(0, 10)}...{deployedAddress.substring(deployedAddress.length - 8)}
-                                                        </UIKitText>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="tertiary"
-                                                            onClick={async () => {
-                                                                await copyToClipboard(deployedAddress)
-                                                            }}
-                                                            style={{ padding: '4px 8px', fontSize: '10px' }}
-                                                        >
-                                                            复制
-                                                        </Button>
-                                                    </div>
-                                                    {deployTxHash && (
-                                                        <>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                                                                <UIKitText fontSize="12px" color="textSubtle">
-                                                                    交易哈希: {deployTxHash.substring(0, 10)}...{deployTxHash.substring(deployTxHash.length - 8)}
-                                                                </UIKitText>
-                                                                <Button
-                                                                    size="sm"
-                                                                    variant="tertiary"
-                                                                    onClick={async () => {
-                                                                        await copyToClipboard(deployTxHash)
-                                                                    }}
-                                                                    style={{ padding: '4px 8px', fontSize: '10px' }}
-                                                                >
-                                                                    复制
-                                                                </Button>
-                                                            </div>
-                                                            <Button
-                                                                size="sm"
-                                                                variant="secondary"
-                                                                onClick={() => window.open(`https://mainnet.bityuan.com/tx/${deployTxHash}`, '_blank')}
-                                                                style={{ marginTop: '8px' }}
-                                                            >
-                                                                在区块浏览器中查看交易
-                                                            </Button>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </AutoColumn>
-                                    ) : (
-                                        <AutoColumn gap="16px">
-                                            <UIKitText fontSize="18px" fontWeight="bold" marginBottom="8px">
-                                                增发ERC20代币
-                                            </UIKitText>
+                            <UIKitText fontSize="14px" color="textSubtle" marginBottom="16px">
+                                {t('mintTokenDesc')}
+                            </UIKitText>
 
-                                            <UIKitText fontSize="14px" color="textSubtle" marginBottom="16px">
-                                                为已部署的代币合约增加供应量（仅限合约owner操作）
-                                            </UIKitText>
+                            <div>
+                                <Label>{t('contractAddressLabel')}</Label>
+                                <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
+                                    {t('contractAddressDesc')}
+                                </UIKitText>
+                                <StyledInput
+                                    type="text"
+                                    placeholder="0x..."
+                                    value={contractAddress}
+                                    onChange={(e) => handleContractAddressChange(e.target.value)}
+                                />
+                            </div>
 
-                                            <div>
-                                                <Label>合约地址 *</Label>
-                                                <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
-                                                    输入您要增发的代币合约地址
+                            {isLoadingTokenInfo && (
+                                <div style={{
+                                    padding: '16px',
+                                    background: '#f8f9fa',
+                                    borderRadius: '8px',
+                                    marginBottom: '16px',
+                                    textAlign: 'center'
+                                }}>
+                                    <UIKitText fontSize="14px" color="textSubtle">
+                                        {t('loadingTokenInfo')}
+                                    </UIKitText>
+                                </div>
+                            )}
+
+                            {tokenInfo && !isLoadingTokenInfo && (
+                                <div style={{
+                                    padding: '16px',
+                                    background: '#f8f9fa',
+                                    borderRadius: '8px',
+                                    marginBottom: '16px'
+                                }}>
+                                    <UIKitText fontSize="14px" fontWeight="bold" marginBottom="8px">
+                                        {t('tokenInfo')}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
+                                        {t('tokenNameField')}{tokenInfo.name}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
+                                        {t('tokenSymbolField')}{tokenInfo.symbol}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
+                                        {t('decimalsField')}{tokenInfo.decimals}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
+                                        {t('totalSupplyField')}{tokenInfo.totalSupply}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
+                                        {t('mintableField')}{tokenInfo.mintable ? t('yes') : t('no')}
+                                    </UIKitText>
+                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
+                                        {t('contractOwner')}{tokenInfo.owner}
+                                    </UIKitText>
+                                </div>
+                            )}
+
+                            {tokenInfo && tokenInfo.mintable && tokenInfo.owner.toLowerCase() === account?.toLowerCase() && (
+                                <>
+                                    <div>
+                                        <Label>{t('mintAmountLabel')}</Label>
+                                        <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
+                                            {t('mintAmountDesc')}
+                                        </UIKitText>
+                                        <StyledInput
+                                            type="text"
+                                            placeholder={t('mintAmountPlaceholder')}
+                                            value={mintAmount}
+                                            onChange={(e) => setMintAmount(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <InfoBox>
+                                        <strong>{t('mintNotice')}</strong>
+                                        <div style={{
+                                            wordBreak: 'break-all',
+                                            marginTop: '4px',
+                                            fontSize: '12px',
+                                            color: '#999'
+                                        }}>
+                                            {account}
+                                        </div>
+                                    </InfoBox>
+
+                                    {mintError && <ErrorText>{mintError}</ErrorText>}
+                                    {mintSuccess && <SuccessText>{mintSuccess}</SuccessText>}
+
+                                    <Button
+                                        onClick={handleMintClick}
+                                        disabled={!mintAmount || isMinting}
+                                        width="100%"
+                                        variant="secondary"
+                                    >
+                                        {t('mintTokenButton')}
+                                    </Button>
+
+                                    {mintTxHash && (
+                                        <div style={{ marginTop: '12px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                                                <UIKitText fontSize="12px" color="textSubtle">
+                                                    {t('mintTxHash')}{mintTxHash.substring(0, 10)}...{mintTxHash.substring(mintTxHash.length - 8)}
                                                 </UIKitText>
-                                                <StyledInput
-                                                    type="text"
-                                                    placeholder="0x..."
-                                                    value={contractAddress}
-                                                    onChange={(e) => handleContractAddressChange(e.target.value)}
-                                                />
+                                                <Button
+                                                    size="sm"
+                                                    variant="tertiary"
+                                                    onClick={async () => {
+                                                        await copyToClipboard(mintTxHash)
+                                                    }}
+                                                    style={{ padding: '4px 8px', fontSize: '10px' }}
+                                                >
+                                                    {t('copy')}
+                                                </Button>
                                             </div>
-
-                                            {isLoadingTokenInfo && (
-                                                <div style={{
-                                                    padding: '16px',
-                                                    background: '#f8f9fa',
-                                                    borderRadius: '8px',
-                                                    marginBottom: '16px',
-                                                    textAlign: 'center'
-                                                }}>
-                                                    <UIKitText fontSize="14px" color="textSubtle">
-                                                        正在获取代币信息...
-                                                    </UIKitText>
-                                                </div>
-                                            )}
-
-                                            {tokenInfo && !isLoadingTokenInfo && (
-                                                <div style={{
-                                                    padding: '16px',
-                                                    background: '#f8f9fa',
-                                                    borderRadius: '8px',
-                                                    marginBottom: '16px'
-                                                }}>
-                                                    <UIKitText fontSize="14px" fontWeight="bold" marginBottom="8px">
-                                                        代币信息
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
-                                                        名称: {tokenInfo.name}
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
-                                                        符号: {tokenInfo.symbol}
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
-                                                        小数位数: {tokenInfo.decimals}
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
-                                                        当前总供应量: {tokenInfo.totalSupply}
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px">
-                                                        支持增发: {tokenInfo.mintable ? '是' : '否'}
-                                                    </UIKitText>
-                                                    <UIKitText fontSize="12px" color="textSubtle" marginBottom="4px" style={{ wordBreak: 'break-all' }}>
-                                                        合约Owner: {tokenInfo.owner}
-                                                    </UIKitText>
-                                                </div>
-                                            )}
-
-                                            {tokenInfo && tokenInfo.mintable && tokenInfo.owner.toLowerCase() === account?.toLowerCase() && (
-                                                <>
-                                                    <div>
-                                                        <Label>增发数量 *</Label>
-                                                        <UIKitText fontSize="12px" color="textSubtle" marginBottom="8px">
-                                                            输入要增发的代币数量（将增发给您的钱包地址）
-                                                        </UIKitText>
-                                                        <StyledInput
-                                                            type="text"
-                                                            placeholder="例如: 1000000"
-                                                            value={mintAmount}
-                                                            onChange={(e) => setMintAmount(e.target.value)}
-                                                        />
-                                                    </div>
-
-                                                    <InfoBox>
-                                                        <strong>注意：</strong>增发的代币将直接发送到您的钱包地址
-                                                        <div style={{
-                                                            wordBreak: 'break-all',
-                                                            marginTop: '4px',
-                                                            fontSize: '12px',
-                                                            color: '#999'
-                                                        }}>
-                                                            {account}
-                                                        </div>
-                                                    </InfoBox>
-
-                                                    {mintError && <ErrorText>{mintError}</ErrorText>}
-                                                    {mintSuccess && <SuccessText>{mintSuccess}</SuccessText>}
-
-                                                    <Button
-                                                        onClick={handleMint}
-                                                        disabled={!mintAmount || isMinting}
-                                                        width="100%"
-                                                        variant="secondary"
-                                                    >
-                                                        {isMinting ? '增发中...' : '增发代币'}
-                                                    </Button>
-
-                                                    {mintTxHash && (
-                                                        <div style={{ marginTop: '12px' }}>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                                                                <UIKitText fontSize="12px" color="textSubtle">
-                                                                    增发交易哈希: {mintTxHash.substring(0, 10)}...{mintTxHash.substring(mintTxHash.length - 8)}
-                                                                </UIKitText>
-                                                                <Button
-                                                                    size="sm"
-                                                                    variant="tertiary"
-                                                                    onClick={async () => {
-                                                                        await copyToClipboard(mintTxHash)
-                                                                    }}
-                                                                    style={{ padding: '4px 8px', fontSize: '10px' }}
-                                                                >
-                                                                    复制
-                                                                </Button>
-                                                            </div>
-                                                            <Button
-                                                                size="sm"
-                                                                variant="tertiary"
-                                                                onClick={() => window.open(`https://mainnet.bityuan.com/tx/${mintTxHash}`, '_blank')}
-                                                            >
-                                                                查看增发交易
-                                                            </Button>
-                                                        </div>
-                                                    )}
-                                                </>
-                                            )}
-
-                                            {tokenInfo && !isLoadingTokenInfo && !tokenInfo.mintable && (
-                                                <ErrorText>该代币合约不支持增发功能</ErrorText>
-                                            )}
-
-                                            {tokenInfo && !isLoadingTokenInfo && tokenInfo.owner.toLowerCase() !== account?.toLowerCase() && (
-                                                <ErrorText>只有代币合约的owner才能进行增发操作。当前合约Owner: {tokenInfo.owner}，您的地址: {account}</ErrorText>
-                                            )}
-
-                                            {!tokenInfo && !isLoadingTokenInfo && contractAddress && mintError && (
-                                                <ErrorText>{mintError}</ErrorText>
-                                            )}
-
-                                            {mintError && mintError !== '请输入有效的合约地址' && <ErrorText>{mintError}</ErrorText>}
-                                        </AutoColumn>
+                                            <Button
+                                                size="sm"
+                                                variant="tertiary"
+                                                onClick={() => window.open(`https://mainnet.bityuan.com/tx/${mintTxHash}`, '_blank')}
+                                            >
+                                                {t('viewMintTransaction')}
+                                            </Button>
+                                        </div>
                                     )}
                                 </>
-                        </AutoColumn>
-                    </CardBody>
-                </Wrapper>
+                            )}
+
+                            {tokenInfo && !isLoadingTokenInfo && !tokenInfo.mintable && (
+                                <ErrorText>{t('tokenNotMintable')}</ErrorText>
+                            )}
+
+                            {tokenInfo && !isLoadingTokenInfo && tokenInfo.owner.toLowerCase() !== account?.toLowerCase() && (
+                                <ErrorText>{t('onlyOwnerCanMint', { owner: tokenInfo.owner, account: account || '' })}</ErrorText>
+                            )}
+
+                            {!tokenInfo && !isLoadingTokenInfo && contractAddress && mintError && (
+                                <ErrorText>{mintError}</ErrorText>
+                            )}
+
+                            {mintError && mintError !== t('pleaseEnterValidContractAddress') && <ErrorText>{mintError}</ErrorText>}
+                            </AutoColumn>
+                        </CardBody>
+                    )}
+                </>
             </AppBody>
         </Container>
     )

@@ -1,0 +1,30 @@
+{
+  "name": "btylock-contracts",
+  "version": "1.0.0",
+  "description": "BTY锁仓合约 - Hardhat项目",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:bityuan_testnet": "hardhat run scripts/deploy.js --network bityuan_testnet",
+    "deploy:bityuan": "hardhat run scripts/deploy.js --network bityuan",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "keywords": [
+    "solidity",
+    "hardhat",
+    "lock",
+    "vesting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.6"
+  }
+}
